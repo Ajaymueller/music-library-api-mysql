@@ -3,6 +3,7 @@ const { Artist } = require('../sequelize');
 
 exports.create = async (req, res) => {
   const artistId = req.params.artistId;
+
   Artist.findByPk(artistId).then(artist => {
     if (!artist) {
       res.status(404).json({ error: 'The artist could not be found.' });
@@ -16,31 +17,14 @@ exports.create = async (req, res) => {
   });
 };
 
-/*exports.findById = (req, res) => {
-  const id = req.params.id;
-  Album.findAll({ include: [ { model: Artist, as: 'artist', where: { id }}]}).then(albums => res.status(200).json(albums));
-}; */
-
-/*exports.findById = (req, res) => {
-  const id = req.params.id;
-  Album.findAll({
-    include: [{
-      model: Artists,
-      as: 'artist', 
-      where: { id }
-    }]
-  })
-  .then(albums => res.status(200).json(albums))
-  .catch(console.error)
-}; */
-
-exports.findById = (req, res) => {
-  let query;
-  if(req.params.artistId) {
-      query = Album.findAll({ include: [
-          { model: Artist, as: 'artist', where: { id: req.params.artistId } }
-      ]}); return query.then(albums => res.json(albums)) 
-  } else {
-    res.status(404).json({ error: 'The artist could not be found.' });
-  }
+exports.findById = async (req, res) => {
+  const artistId = req.params.artistId;
+  Artist.findByPk(artistId).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The artist and album could not be found.' });
+    } else {
+      Album.findAll({ where: { artistId } })
+      .then(album => res.status(200).json(album)).catch(error => console.log(error))
+    }
+    });
 }

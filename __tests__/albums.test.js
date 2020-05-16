@@ -69,39 +69,43 @@ describe('/albums', () => {
   });
 
 
-  /*describe('with albums in the database', () => {
+  describe('with albums in the database', () => {
     let albums;
     beforeEach((done) => {
       Promise.all([
-        Artist.create({ name: 'Tame Impala', genre: 'Rock' }),
-        Album.create({ name: 'InnerSpeaker', year: 2010 })
+        Album.create({ name: 'InnerSpeaker', year: 2010, artistId: artist.id }),
+        Album.create({ name: 'TestAlbum', year: 2010, artistId: artist.id })
       ]).then((documents) => {
         albums = documents;
         done();
       });
-    });*/
+    });
 
 
-  describe('GET /albums/:id', () => {
-    it('gets album record by id', (done) => {
+  describe('GET artists/:artistId/albums', () => {
+    it('gets album record by artist id', (done) => {
       request(app)
-        .get(`/albums/${artist.id}`)
+        .get(`/artists/${artist.id}/albums`)
         .then((res) => {
+          res.body.forEach((album) => {
+            const expected = albums.find((a) => a.id === album.id);
+            expect(album.name).to.equal(expected.name);
+            expect(album.year).to.equal(expected.year);
+          });
           expect(res.status).to.equal(200);
-          expect(res.body.name).to.equal(album.name);
-          expect(res.body.year).to.equal(album.year);
           done();
         });
     });
 
-    xit('returns a 404 if the artist does not exist', (done) => {
+    it('returns a 404 if the artist does not exist', (done) => {
       request(app)
-        .get('/albums/12345')
+        .get('/artists/12345/albums')
         .then((res) => {
           expect(res.status).to.equal(404);
-          expect(res.body.error).to.equal('The album could not be found.');
+          expect(res.body.error).to.equal('The artist and album could not be found.');
           done();
         });
     });
   });
+});
 });
