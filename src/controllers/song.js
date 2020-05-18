@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
  try {
   const createSong = await Song.create(req.body);
   const song = await createSong.setAlbum(Number(albumId));
-  const albumSong = await song.setArtist(artistId);
+  const albumSong = awaitsong.setArtist(artistId);
   res.status(201).json(albumSong);
 } catch(error) {
   console.log(error);

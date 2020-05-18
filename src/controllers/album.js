@@ -1,7 +1,7 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
 
-exports.create = async (req, res) => {
+/*exports.create = async (req, res) => {
   const artistId = req.params.artistId;
 
   Artist.findByPk(artistId).then(artist => {
@@ -15,7 +15,18 @@ exports.create = async (req, res) => {
       });
     }
   });
-};
+};*/
+
+exports.create = async (req, res) => {
+  const artistId = req.params.artistId;
+  const artist = await Artist.findByPk(artistId);
+ ! artist ? res.status(404).json({ error: 'The artist could not be found.' }) 
+    : Album.create(req.body).then(album => {
+      album.setArtist(artistId).then(linkedAlbum => {
+        res.status(201).json(linkedAlbum); 
+  })
+})
+}
 
 exports.findById = async (req, res) => {
   const artistId = req.params.artistId;
