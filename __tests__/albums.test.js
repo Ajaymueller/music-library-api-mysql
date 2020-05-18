@@ -69,7 +69,7 @@ describe('/albums', () => {
   });
 
 
-  describe.only('with albums in the database', () => {
+  describe('with albums in the database', () => {
     let albums;
     beforeEach((done) => {
       Promise.all([
@@ -226,7 +226,7 @@ describe('DELETE artists/albums/:albumId', () => {
       .query({ name: 'randomName'})
       .then((res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal('The artist and album could not be found.');
+        expect(res.body.error).to.equal('The album could not be found.');
         done();
       });
   });

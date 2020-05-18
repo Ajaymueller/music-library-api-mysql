@@ -20,6 +20,17 @@ exports.findById = (req, res) => {
 });
 };
 
+exports.findByName = (req, res) => {
+  const name = req.params.name;
+  Artist.findAll({ where: { name: name }}).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The artist could not be found.' });
+    } else {
+      res.status(200).json(artist);
+    };
+  });
+};
+
 exports.updateGenre = (req, res) => {
   const id = req.params.id;
   Artist.update(req.body, { where: { id } }).then(([rowsUpdated]) => {
