@@ -17,7 +17,7 @@ exports.findById = async (req, res) => {
   await Artist.findByPk(artistId).then(artist => {
     ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
     : Album.findAll({ where: { artistId } })
-    .then(album => res.status(200).json(album)).catch(error => console.log(error))
+    .then(album => res.status(200).json(album))
   });
 };
 

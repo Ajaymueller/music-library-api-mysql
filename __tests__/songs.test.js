@@ -70,7 +70,7 @@ describe('/songs', () => {
     });
 
     describe('GET albums/:albumId/songs', () => {
-      it('gets all songs by album id', (done) => {
+      xit('gets all songs by album id', (done) => {
         request(app)
           .get(`/albums/${album.id}/song`)
           .then((res) => {
@@ -82,7 +82,7 @@ describe('/songs', () => {
             done();
           });
       });
-      it('returns a 404 if the artist does not exist', (done) => {
+      xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get('/albums/12345/song')
           .then((res) => {
@@ -92,5 +92,28 @@ describe('/songs', () => {
           });
       });
     });
+    describe('GET albums/:albumId/song/:songId', () => {
+      it('gets one song by song id', (done) => {
+        const song = songs[0];
+        request(app)
+        .get(`/albums/${album.id}/song/${song.id}`)
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.name).to.equal(song.name);
+          expect(res.body.id).to.equal(song.id);
+          expect(res.body.albumId).to.equal(album.id);
+          done();
+        })
+      })
+      it('returns a 404 if the song does not exist', (done) => {
+        request(app)
+        .get(`/albums/12345/song/12345`)
+        .then((res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.equal('The song could not be found.');
+          done();
+        })
+      })
+    })
 });
 });

@@ -46,6 +46,6 @@ app.post(`/albums/:albumId/song`, songControllers.create);
 
 app.get(`/albums/:albumId/song`, songControllers.findAllById);
 
-//app.get(`/albums/:songid`, songControllers.findOneById);
+app.get(`/albums/:albumId/song/:songId`, songControllers.findOneById);
 
 module.exports = app;

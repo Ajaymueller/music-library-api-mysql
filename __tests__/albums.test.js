@@ -107,7 +107,7 @@ describe('/albums', () => {
         });
     });
   });
-  describe('GET artists/:artistId/albums', () => {
+  describe('GET artists/:artistId/albums/:albumId', () => {
     xit('gets album record by album id', (done) => {
       const album = albums[0];
       request(app)
