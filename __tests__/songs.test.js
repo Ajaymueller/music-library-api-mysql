@@ -37,7 +37,7 @@ describe('/songs', () => {
     }
   });
 
-  describe.only('POST /albums/:albumId/song', () => {
+  describe('POST /albums/:albumId/song', () => {
     xit('creates a new song under an album', (done) => {
       request(app)
         .post(`/albums/${album.id}/song`)
@@ -56,4 +56,41 @@ describe('/songs', () => {
         });
     });
   });
+
+  describe.only('with songs in the database', () => {
+    let songs;
+    beforeEach((done) => {
+      Promise.all([
+        Song.create({ name: 'Song1' , albumId: album.id, artistId: artist.id }),
+        Song.create({ name: 'Song2' , albumId: album.id, artistId: artist.id })
+      ]).then((documents) => {
+        songs = documents;
+        done();
+      });
+    });
+
+    describe('GET albums/:albumId/songs', () => {
+      it('gets all songs by album id', (done) => {
+        request(app)
+          .get(`/albums/${album.id}/song`)
+          .then((res) => {
+            songs.forEach((song) => {
+              const expected = songs.find((a) => a.id === song.id);
+              expect(song.name).to.equal(expected.name);
+            });
+            expect(res.status).to.equal(200);
+            done();
+          });
+      });
+      it('returns a 404 if the artist does not exist', (done) => {
+        request(app)
+          .get('/albums/12345/song')
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The album could not be found.');
+            done();
+          });
+      });
+    });
+});
 });

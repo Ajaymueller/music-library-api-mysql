@@ -40,6 +40,12 @@ app.delete(`/artists/:artistId/albums/:albumId`, albumControllers.deleteById);
 
 app.delete(`/artists/albums/:albumId`, albumControllers.deleteByIdAndName);
 
+// app.use('/songs', albumRouter);
+
 app.post(`/albums/:albumId/song`, songControllers.create);
+
+app.get(`/albums/:albumId/song`, songControllers.findAllById);
+
+//app.get(`/albums/:songid`, songControllers.findOneById);
 
 module.exports = app;

@@ -29,7 +29,7 @@ describe('/albums', () => {
     }
   });
 
-  describe.only('POST /artists/:artistId/albums', () => {
+  describe('POST /artists/:artistId/albums', () => {
     xit('creates a new album for a given artist', (done) => {
       request(app)
         .post(`/artists/${artist.id}/albums`)
@@ -159,7 +159,6 @@ describe('/albums', () => {
 });
 describe('PATCH artists/:artistId/albums', () => {
   xit('updates album by artist Id', (done) => {
-
     request(app)
       .patch(`/artists/${artist.id}/albums`)
       .send( { year: 2011 })
