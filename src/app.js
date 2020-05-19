@@ -48,4 +48,6 @@ app.get(`/albums/:albumId/song`, songControllers.findAllById);
 
 app.get(`/albums/:albumId/song/:songId`, songControllers.findOneById);
 
+app.patch('/albums/:albumId/song/:songId', songControllers.update);
+
 module.exports = app;
