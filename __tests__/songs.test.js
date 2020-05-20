@@ -68,6 +68,22 @@ describe('/songs', () => {
         done();
       });
     });
+    
+    describe('GET /songs', () => {
+      it('gets all song records', (done) => {
+        request(app)
+          .get('/song')
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(2);
+            res.body.forEach((song) => {
+              const expected = songs.find((a) => a.id === song.id);
+              expect(song.name).to.equal(expected.name);
+            });
+            done();
+          });
+      });
+    });
 
     describe('GET albums/:albumId/songs', () => {
       xit('gets all songs by album id', (done) => {

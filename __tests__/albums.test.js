@@ -80,6 +80,23 @@ describe('/albums', () => {
         done();
       });
     });
+  
+    describe('GET /albums', () => {
+      xit('gets all album records', (done) => {
+        request(app)
+          .get('/albums')
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(2);
+            res.body.forEach((album) => {
+              const expected = albums.find((a) => a.id === album.id);
+              expect(album.name).to.equal(expected.name);
+              expect(album.year).to.equal(expected.year);
+            });
+            done();
+          });
+      });
+    });
 
 
   describe('GET artists/:artistId/albums', () => {
@@ -156,33 +173,6 @@ describe('/albums', () => {
         done();
       });
   });
-});
-describe('PATCH artists/:artistId/albums', () => {
-  xit('updates album by artist Id', (done) => {
-    request(app)
-      .patch(`/artists/${artist.id}/albums`)
-      .send( { year: 2011 })
-      .then((res) => {
-        expect(res.status).to.equal(200);
-        res.body.forEach((album) => {
-          albums.find((a) => a.id === album.id)
-          .then((updatedAlbum) => {
-            expect(updatedAlbum.year).to.equal(2011)
-            done();
-          })
-        })
-      })
-      })
-xit('returns a 404 if the artist does not exist', (done) => {
-  request(app)
-    .patch('/artists/12345/albums')
-    .send({ year: 2011 })
-    .then((res) => {
-      expect(res.status).to.equal(404);
-      expect(res.body.error).to.equal('The artist and album could not be found.');
-      done();
-    });
-});
 });
 describe('DELETE artists/:artistId/albums/:albumId', () => {
   xit('deletes album record by album id', (done) => {

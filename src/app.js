@@ -28,21 +28,25 @@ app.delete('/artists/:id', artistControllers.deleteArtist);
 
 app.post('/artists/:artistId/albums', albumControllers.create);
 
+app.get('/albums', albumControllers.list);
+
 app.get(`/artists/:artistId/albums`, albumControllers.findById);
 
 app.get(`/artists/:artistId/albums/:albumId`, albumControllers.findOneById);
 
 app.patch('/albums/:albumId', albumControllers.updateById);
 
-app.patch(`/artists/:artistid/albums`, albumControllers.updateByArtistId);
-
 app.delete(`/artists/:artistId/albums/:albumId`, albumControllers.deleteById);
 
 app.delete(`/artists/albums/:albumId`, albumControllers.deleteByIdAndName);
 
+app.delete('/artists/:artistId/albums', albumControllers.deleteByArtistId);
+
 // app.use('/songs', albumRouter);
 
 app.post(`/albums/:albumId/song`, songControllers.create);
+
+app.get('/song', songControllers.listSongs);
 
 app.get(`/albums/:albumId/song`, songControllers.findAllById);
 

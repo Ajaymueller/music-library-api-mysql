@@ -37,7 +37,7 @@ describe('/artists', () => {
     });
   });
 
-  describe.only('with artists in the database', () => {
+  describe('with artists in the database', () => {
     let artists;
     beforeEach((done) => {
       Promise.all([

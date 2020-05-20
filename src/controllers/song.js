@@ -15,6 +15,10 @@ exports.create = async (req, res) => {
 } 
 };
 
+exports.listSongs = async (req, res) => {
+  Song.findAll({where: {}}).then(songs => res.status(200).json(songs));
+};
+
 exports.findAllById = async (req, res) => {
   const { albumId } = req.params; 
   await Album.findByPk(albumId).then(album => {
