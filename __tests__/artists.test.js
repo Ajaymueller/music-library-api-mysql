@@ -37,7 +37,7 @@ describe('/artists', () => {
     });
   });
 
-  describe('with artists in the database', () => {
+  describe.only('with artists in the database', () => {
     let artists;
     beforeEach((done) => {
       Promise.all([
@@ -91,8 +91,8 @@ describe('/artists', () => {
       });
     });
 
-    describe.only('GET /artists', () => {
-      it('gets artist record by name', (done) => {
+    describe('GET /artists', () => {
+      xit('gets artist record by name', (done) => {
         const artist = artists[0];
         request(app)
           .get(`/artists/find`)
@@ -105,7 +105,7 @@ describe('/artists', () => {
           });
       });
 
-      it('returns a 404 if the artist does not exist', (done) => {
+      xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get(`/artists/find`)
           .query({ name: 'randomName' })

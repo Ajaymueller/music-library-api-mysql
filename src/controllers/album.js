@@ -110,3 +110,7 @@ exports.deleteById = async (req, res) => {
       : res.status(404).json({ error: 'The album could not be found.'})
     });
   };
+
+  exports.deleteByArtistId = async (req, res) => {
+    const { artistId } = req.params;
+  }

@@ -14,9 +14,9 @@ app.post('/artists', artistControllers.create);
 
 app.get('/artists', artistControllers.list);
 
-app.get('/artists/:id', artistControllers.findById);
-
 app.get('/artists/find', artistControllers.findByName);
+
+app.get('/artists/:id', artistControllers.findById);
 
 app.patch('/artists/:id', artistControllers.updateGenre);
 

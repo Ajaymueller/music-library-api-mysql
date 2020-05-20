@@ -16,37 +16,17 @@ exports.findById = (req, res) => {
   });
 };
 
-/*exports.findByName = (req, res) => {
-  const { name } = req.query;
-  Artist.findAll({ where: { name: name }}).then(artist => {
-    if (name === artist.name) {
-      res.status(200).json(artist); 
-    } else {
-      res.status(404).json({ error: 'The artist could not be found.' });
-    };
-  });
-};*/
 exports.findByName = (req, res) => {
   const { name } = req.query;
   Artist.findAll({ where: { name: name }}).then(artists => {
     const artistData = artists.find(artist => artist.name === name)
-    console.log(artistData);
     if (artistData) {
-      res.status(200).json(artist);
+      res.status(200).json(artistData);
     } else {
       res.status(404).json({ error: 'The artist could not be found.' });
     };
   });
 }
-
-/*exports.findByName = (req, res) => {
-  const { name } = req.query;
-  const findArtist = await Artist.findAll({ where: { name: name }})
-  Artist.findAll({ where: { name: name }}).then(artist => {
-    ! artist ? res.status(404).json({ error: 'The artist could not be found.' })
-    : res.status(200).json(artist);
-  });
-};*/
 
 exports.updateGenre = (req, res) => {
   const { id } = req.params;
