@@ -57,7 +57,7 @@ describe('/songs', () => {
     });
   });
 
-  describe.only('with songs in the database', () => {
+  describe('with songs in the database', () => {
     let songs;
     beforeEach((done) => {
       Promise.all([
@@ -92,22 +92,21 @@ describe('/songs', () => {
           });
       });
     });
-    describe('GET albums/:albumId/song/:songId', () => {
+    describe('GET song/:songId', () => {
       xit('gets one song by song id', (done) => {
         const song = songs[0];
         request(app)
-        .get(`/albums/${album.id}/song/${song.id}`)
+        .get(`/song/${song.id}`)
         .then((res) => {
           expect(res.status).to.equal(200);
           expect(res.body.name).to.equal(song.name);
           expect(res.body.id).to.equal(song.id);
-          expect(res.body.albumId).to.equal(album.id);
           done();
         })
       })
       xit('returns a 404 if the song does not exist', (done) => {
         request(app)
-        .get(`/albums/12345/song/12345`)
+        .get(`/song/12345`)
         .then((res) => {
           expect(res.status).to.equal(404);
           expect(res.body.error).to.equal('The song could not be found.');
@@ -115,30 +114,54 @@ describe('/songs', () => {
         })
       })
     })
-    describe('PATCH albums/:albumId/song/:songId', () => {
-      it('updates a song name by song id', (done) => {
-        const song = songs[0];
-        request(app)
-        .patch(`/albums/${album.id}/song/${song.id}`)
-        .send({ name: 'song3'})
-        .then((res) => {
-          expect(res.status).to.equal(200);
-              Song.findByPk(song.id).then((updatedSong) => {
-                expect(updatedSong.name).to.equal('song3');
-                done();
-        })
-      })
+
+describe('/song/:songId', () => {
+  xit('updates a song name by song id', (done) => {
+    const song = songs[0];
+    request(app)
+    .patch(`/song/${song.id}`)
+    .send({ name: 'song3'})
+    .then((res) => {
+      expect(res.status).to.equal(200);
+          Song.findByPk(song.id).then((updatedSong) => {
+            expect(updatedSong.name).to.equal('song3');
+            done();
     })
-    it('returns a 404 if the song does not exist', (done) => {
-      request(app)
-      .patch(`/albums/12345/song/12345`)
-      .send({ name: 'randomName' })
+  })
+})
+xit('returns a 404 if the song does not exist', (done) => {
+  request(app)
+  .patch(`/song/12345`)
+  .send({ name: 'randomName' })
+  .then((res) => {
+    expect(res.status).to.equal(404);
+    expect(res.body.error).to.equal('The song could not be found.');
+    done();
+  })
+})
+});
+describe('DELETE song/:songId', () => {
+  xit('deletes one song by song id', (done) => {
+    const song = songs[0];
+    request(app)
+      .delete(`/song/${song.id}`)
+      .then((res) => {
+        expect(res.status).to.equal(204);
+        Song.findByPk(song.id).then((destroyedSong) => {
+          expect(destroyedSong).to.equal(null)
+          done();
+        });
+      });
+  });
+  xit('returns a 404 if the artist does not exist', (done) => {
+    request(app)
+      .delete('/song/12345')
       .then((res) => {
         expect(res.status).to.equal(404);
         expect(res.body.error).to.equal('The song could not be found.');
         done();
-      })
-    })
-});
+      });
+  });
+})
 });
 });

@@ -25,26 +25,28 @@ exports.findAllById = async (req, res) => {
 
 exports.findOneById = async (req, res) => {
   const { songId } = req.params; 
-  const { albumId } = req.params;
-  await Album.findByPk(albumId).then(album => {
-    ! album ? res.status(404).json({ error: 'The song could not be found.'})
-    : Song.findByPk(songId).then(song => {
+  await Song.findByPk(songId).then(song => {
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
     : res.status(200).json(song);
-  })
-});
-}
-
-exports.update = async (req, res) => {
-  const { songId } = req.params; 
-  const { albumId } = req.params;
-  await Album.findByPk(albumId).then(album => {
-    ! album ? res.status(404).json({ error: 'The song could not be found.'})
-    : Song.findByPk(songId).then(song => {
-      ! song ? res.status(404).json({ error: 'The song could not be found.'})
-      : song.update(req.body, { where: {id: songId}}).then(updatedSong => {
-        res.status(200).json(updatedSong);
-      });
-    });
   });
 };
+
+exports.update = async (req, res) => {
+  const { songId } = req.params;
+  await Song.findByPk(songId).then(song => {
+    ! song ? res.status(404).json({ error: 'The song could not be found.'})
+      : song.update(req.body, { where: {id: songId}}).then(updatedSong => {
+        res.status(200).json(updatedSong);
+  });
+});
+};
+
+exports.delete = async (req, res) => {
+  const { songId } = req.params; 
+  await Song.findByPk(songId).then(song => {
+    ! song ? res.status(404).json({ error: 'The song could not be found.'})
+    : song.destroy({where: { id: songId }}).then(destroyedSong => {
+      res.status(204).json(destroyedSong);
+    })
+})
+}

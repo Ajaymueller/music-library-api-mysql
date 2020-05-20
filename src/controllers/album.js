@@ -34,19 +34,15 @@ exports.findOneById = async (req, res) => {
 };
 
 exports.updateById = async (req, res) => {
-  const { artistId } = req.params;
   const { albumId } = req.params;
-  await Artist.findByPk(artistId).then(artist => {
-    ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
-    : Album.findByPk(albumId).then(album => {
+  await Album.findByPk(albumId).then(album => {
       ! album ? res.status(404).json({ error: 'The album could not be found.' })
       : Album.update(req.body, { where: { id: albumId} } )
       .then(updatedAlbum => res.status(200).json(updatedAlbum))
     });
-  });
-};
+  };
 
-exports.updateByArtistId = async (req, res) => {
+/*exports.updateByArtistId = async (req, res) => {
   const { artistId } = req.params;
   await Artist.findByPk(artistId).then(artist => {
     ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
@@ -55,7 +51,41 @@ exports.updateByArtistId = async (req, res) => {
       : res.status(200).json(updatedAlbum);
     });
   });
-};
+};*/
+
+/*exports.updateByArtistId = async (req, res) => { // not working!!
+  const { artistId } = req.params;
+  await Artist.findByPk(artistId).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The artist and album could not be found.' })
+    } else {
+      if (artistId === Album.artistId) {
+        Album.update(req.body).then(([updatedAlbum]) => {
+          ! updatedAlbum ? res.status(404).json({ error: 'The album could not be found.' })
+          : res.status(200).json(updatedAlbum);
+        });
+      };
+    };
+  });
+};*/
+
+exports.updateByArtistId = async (req, res) => {
+  const { artistId } = req.params;
+  Artist.findByPk(artistId).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The artist and album could not be found.' })
+    } else {
+      Album.update(req.body, { where: { artistId: artistId}}).then(([updatedAlbum]) => {
+        if (!udatedAlbum) {
+          res.status(404).json({ error: 'The album could not be found.' })
+        } else {
+          res.status(200).json(updatedAlbum);
+        }
+      })
+
+    }
+  })
+}
 
 exports.deleteById = async (req, res) => {
     const { artistId } = req.params;

@@ -16,7 +16,7 @@ app.get('/artists', artistControllers.list);
 
 app.get('/artists/:id', artistControllers.findById);
 
-app.get('/artists', artistControllers.findByName);
+app.get('/artists/find', artistControllers.findByName);
 
 app.patch('/artists/:id', artistControllers.updateGenre);
 
@@ -32,7 +32,7 @@ app.get(`/artists/:artistId/albums`, albumControllers.findById);
 
 app.get(`/artists/:artistId/albums/:albumId`, albumControllers.findOneById);
 
-app.patch('/artists/:artistId/albums/:albumId', albumControllers.updateById);
+app.patch('/albums/:albumId', albumControllers.updateById);
 
 app.patch(`/artists/:artistid/albums`, albumControllers.updateByArtistId);
 
@@ -46,8 +46,10 @@ app.post(`/albums/:albumId/song`, songControllers.create);
 
 app.get(`/albums/:albumId/song`, songControllers.findAllById);
 
-app.get(`/albums/:albumId/song/:songId`, songControllers.findOneById);
+app.get(`/song/:songId`, songControllers.findOneById);
 
-app.patch('/albums/:albumId/song/:songId', songControllers.update);
+app.patch('/song/:songId', songControllers.update);
+
+app.delete('/song/:songId', songControllers.delete);
 
 module.exports = app;

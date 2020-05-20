@@ -37,7 +37,7 @@ describe('/artists', () => {
     });
   });
 
-  describe.only('with artists in the database', () => {
+  describe('with artists in the database', () => {
     let artists;
     beforeEach((done) => {
       Promise.all([
@@ -91,11 +91,11 @@ describe('/artists', () => {
       });
     });
 
-    describe('GET /artists', () => {
-      xit('gets artist record by name', (done) => {
+    describe.only('GET /artists', () => {
+      it('gets artist record by name', (done) => {
         const artist = artists[0];
         request(app)
-          .get(`/artists`)
+          .get(`/artists/find`)
           .query({ name: 'Tame Impala' })
           .then((res) => {
             expect(res.status).to.equal(200);
@@ -105,10 +105,10 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         request(app)
-          .get(`/artists`)
-          .query({ name: 'randomName'})
+          .get(`/artists/find`)
+          .query({ name: 'randomName' })
           .then((res) => {
             expect(res.status).to.equal(404);
             expect(res.body.error).to.equal('The artist could not be found.');
@@ -159,7 +159,7 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+     xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .patch('/artists/12345')
           .send({ name: 'Eminem' })

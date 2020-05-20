@@ -108,7 +108,7 @@ describe('/albums', () => {
     });
   });
   describe('GET artists/:artistId/albums/:albumId', () => {
-    xit('gets album record by album id', (done) => {
+   xit('gets album record by album id', (done) => {
       const album = albums[0];
       request(app)
         .get(`/artists/${artist.id}/albums/${album.id}`)
@@ -132,11 +132,11 @@ describe('/albums', () => {
         });
     });
   });
-  describe('PATCH artists/:artistId/albums/:albumId', () => {
+  describe('PATCH albums/:albumId', () => {
     xit('updates album by album Id', (done) => {
       const album = albums[0];
       request(app)
-        .patch(`/artists/${artist.id}/albums/${album.id}`)
+        .patch(`/albums/${album.id}`)
         .send( { year: 2011 })
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -148,11 +148,11 @@ describe('/albums', () => {
   })
   xit('returns a 404 if the artist does not exist', (done) => {
     request(app)
-      .patch('/artists/12345/albums/12345')
+      .patch('/albums/12345')
       .send({ year: 2011 })
       .then((res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal('The artist and album could not be found.');
+        expect(res.body.error).to.equal('The album could not be found.');
         done();
       });
   });
@@ -164,10 +164,12 @@ describe('PATCH artists/:artistId/albums', () => {
       .send( { year: 2011 })
       .then((res) => {
         expect(res.status).to.equal(200);
-        Artist.findByPk(res.body.id)
-        .then((updatedAlbum) => {
-          expect(updatedAlbum.year).to.equal(2011)
-          done();
+        res.body.forEach((album) => {
+          albums.find((a) => a.id === album.id)
+          .then((updatedAlbum) => {
+            expect(updatedAlbum.year).to.equal(2011)
+            done();
+          })
         })
       })
       })
@@ -231,4 +233,4 @@ describe('DELETE artists/albums/:albumId', () => {
   });
 });
 });
-});
+  });

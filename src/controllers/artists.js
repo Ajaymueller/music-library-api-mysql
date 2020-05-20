@@ -16,16 +16,28 @@ exports.findById = (req, res) => {
   });
 };
 
-exports.findByName = (req, res) => {
-  const name = req.query.name;
-  Artist.findAll({ where: { name: name}}).then(artist => {
-    if (!artist) {
-      res.status(404).json({ error: 'The artist could not be found.' });
+/*exports.findByName = (req, res) => {
+  const { name } = req.query;
+  Artist.findAll({ where: { name: name }}).then(artist => {
+    if (name === artist.name) {
+      res.status(200).json(artist); 
     } else {
-      res.status(200).json(artist);
+      res.status(404).json({ error: 'The artist could not be found.' });
     };
   });
-};
+};*/
+exports.findByName = (req, res) => {
+  const { name } = req.query;
+  Artist.findAll({ where: { name: name }}).then(artists => {
+    const artistData = artists.find(artist => artist.name === name)
+    console.log(artistData);
+    if (artistData) {
+      res.status(200).json(artist);
+    } else {
+      res.status(404).json({ error: 'The artist could not be found.' });
+    };
+  });
+}
 
 /*exports.findByName = (req, res) => {
   const { name } = req.query;
