@@ -11,6 +11,8 @@ router.get(`/albums/:albumId/song`, songControllers.findAllById);
 
 router.get('/song/:songId', songControllers.findOneById);
 
+router.get('/song/find/name', songControllers.findByName);
+
 router.patch('/song/:songId', songControllers.update);
 
 router.delete('/song/:songId', songControllers.delete);

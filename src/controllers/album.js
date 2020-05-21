@@ -37,6 +37,24 @@ exports.findOneById = async (req, res) => {
   });
 };
 
+exports.findByYear = async (req, res) => {
+  const { year } = req.query;
+  const albums = await Album.findAll({ where: { year: year }})
+  const albumData = await albums.filter(album => album.year === year)
+    albumData < 1 ?
+    res.status(404).json({ error: 'The album could not be found.'})
+    : res.status(200).json(albumData)
+  }
+
+exports.findByName = async (req, res) => {
+  const { name } = req.query;
+  const albums = await Album.findAll({ where: { name: name }})
+  const albumData = await albums.filter(album => album.name === name);
+      albumData < 1 ? 
+      res.status(404).json({ error: 'The album could not be found.'})
+      : res.status(200).json(albumData);
+}
+
 exports.updateById = async (req, res) => {
   const { albumId } = req.params;
   await Album.findByPk(albumId).then(album => {

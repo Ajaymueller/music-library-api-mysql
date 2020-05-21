@@ -18,7 +18,7 @@ exports.findById = (req, res) => {
 
 exports.findByName = (req, res) => {
   const { name } = req.query;
-  Artist.findAll({ where: { name: name}}).then(artists => {
+  Artist.findAll({ where: { name: name }}).then(artists => {
     const artistData = artists.find(artist => artist.name === name)
     artistData ? 
     res.status(200).json(artistData)

@@ -36,6 +36,16 @@ exports.findOneById = async (req, res) => {
   });
 };
 
+exports.findByName = async (req, res) => {
+  const { name } = req.query;
+  Song.findAll({where: { name: name}}).then(songs => {
+    const songData = songs.find(song => song.name === name)
+    ! songData ? 
+    res.status(404).json({ error: 'The song could not be found.'})
+    : res.status(200).json(songData);
+  });
+};
+
 /*exports.getSongWithSpecificName = async (req, res) => {
   await Song.findAll({ where: { name: {[Op.like]: req.query}}})
 };*/

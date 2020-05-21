@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album, Song } = require('../src/sequelize');
 
-describe.only('/songs', () => {
+describe('/songs', () => {
   let artist;
   let album;
 
@@ -129,6 +129,30 @@ describe.only('/songs', () => {
           done();
         })
       })
+    })
+    describe('GET song', () => {
+      it('gets songs by song name', (done) => {
+        const song = songs[0];
+        request(app)
+        .get('/song/find/name')
+        .query({ name: 'Song1' })
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.name).to.equal(song.name);
+          expect(res.body.year).to.equal(song.year);
+          done();
+        })
+      })
+      it('returns a 404 if the artist does not exist', (done) => {
+        request(app)
+          .get(`/song/find/name`)
+          .query({ name: 'randomName' })
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The song could not be found.');
+            done();
+          });
+      });
     })
     describe('GET song', () => {
       xit('gets all songs with a specific word in the name', (done) => {

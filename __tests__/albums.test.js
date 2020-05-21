@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album } = require('../src/sequelize');
 
-describe('/albums', () => {
+describe.only('/albums', () => {
   let artist;
 
   before(async () => {
@@ -74,7 +74,7 @@ describe('/albums', () => {
     beforeEach((done) => {
       Promise.all([
         Album.create({ name: 'InnerSpeaker', year: 2010, artistId: artist.id }),
-        Album.create({ name: 'TestAlbum', year: 2010, artistId: artist.id })
+        Album.create({ name: 'TestAlbum', year: 2011, artistId: artist.id })
       ]).then((documents) => {
         albums = documents;
         done();
@@ -149,6 +149,56 @@ describe('/albums', () => {
         });
     });
   });
+  describe('GET /albums', () => {
+    it('gets album records by year', (done) => {
+       const album = albums[0];
+       request(app)
+         .get('/albums/find/year')
+         .query({ year: 2010 })
+         .then((res) => {
+          expect(res.body.name).to.equal(album.name);
+          expect(res.body.year).to.equal(album.year);
+          expect(res.status).to.equal(200);
+          done();
+         });
+     });
+ 
+     it('returns a 404 if the artist does not exist', (done) => {
+       request(app)
+         .get('/albums/find/year')
+         .query({ year: 0000 })
+         .then((res) => {
+           expect(res.status).to.equal(404);
+           expect(res.body.error).to.equal('The album could not be found.');
+           done();
+         });
+     });
+   });
+   describe('GET /albums', () => {
+    it('gets album records by name', (done) => {
+       const album = albums[0];
+       request(app)
+         .get(`/albums/find/name`)
+         .query({ name: 'InnerSpeaker' })
+         .then((res) => {
+          expect(res.body[0].name).to.equal(album.name);
+          expect(res.body[0].year).to.equal(album.year);
+          expect(res.status).to.equal(200);
+          done();
+         });
+     });
+ 
+     it('returns a 404 if the artist does not exist', (done) => {
+       request(app)
+         .get('/albums/find/name')
+         .query({ name: 'randomName' })
+         .then((res) => {
+           expect(res.status).to.equal(404);
+           expect(res.body.error).to.equal('The album could not be found.');
+           done();
+         });
+     });
+   });
   describe('PATCH albums/:albumId', () => {
     it('updates album by album Id', (done) => {
       const album = albums[0];
