@@ -70,7 +70,7 @@ describe('/songs', () => {
     });
     
     describe('GET /songs', () => {
-      it('gets all song records', (done) => {
+      xit('gets all song records', (done) => {
         request(app)
           .get('/song')
           .then((res) => {
@@ -130,6 +130,30 @@ describe('/songs', () => {
         })
       })
     })
+    describe('GET song', () => {
+      xit('gets all songs with a specific word in the name', (done) => {
+        request(app)
+        .get('/song')
+        .query({ name: '%song%' })
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.length).to.equal(2);
+
+
+        });
+      });
+      xit('returns a 404 if there is no song returned', (done) => {
+        request(app)
+        .get('/song')
+        .query({ name: '%randomWord%' })
+        .then((res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.equal('The song could not be found.');
+          done();
+        })
+      })
+    });
+
 
 describe('/song/:songId', () => {
   xit('updates a song name by song id', (done) => {

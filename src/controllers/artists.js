@@ -18,15 +18,23 @@ exports.findById = (req, res) => {
 
 exports.findByName = (req, res) => {
   const { name } = req.query;
-  Artist.findAll({ where: { name: name }}).then(artists => {
+  Artist.findAll({ where: { name: name}}).then(artists => {
     const artistData = artists.find(artist => artist.name === name)
-    if (artistData) {
-      res.status(200).json(artistData);
-    } else {
-      res.status(404).json({ error: 'The artist could not be found.' });
-    };
+    artistData ? 
+    res.status(200).json(artistData)
+    : res.status(404).json({ error: 'The artist could not be found.' })
   });
-}
+};
+
+exports.findByGenre = (req, res) => {
+  const { genre } = req.query; 
+  Artist.findAll({ where: { genre: genre }}).then(artists => {
+    const artistData = artists.find(artist => artist.genre === genre)
+    artistData ?
+    res.status(200).json(artistData)
+    : res.status(404).json({ error: 'The artist could not be found.' })
+});
+};
 
 exports.updateGenre = (req, res) => {
   const { id } = req.params;

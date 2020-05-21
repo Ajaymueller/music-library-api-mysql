@@ -1,6 +1,7 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
 const { Song } = require('../sequelize');
+//const Op = Sequelize.Op;
 
 exports.create = async (req, res) => {
   const  { albumId } = req.params;
@@ -34,6 +35,10 @@ exports.findOneById = async (req, res) => {
     : res.status(200).json(song);
   });
 };
+
+/*exports.getSongWithSpecificName = async (req, res) => {
+  await Song.findAll({ where: { name: {[Op.like]: req.query}}})
+};*/
 
 exports.update = async (req, res) => {
   const { songId } = req.params;

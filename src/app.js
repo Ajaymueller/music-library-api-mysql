@@ -10,21 +10,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/artists', artistControllers.create);
-
-app.get('/artists', artistControllers.list);
-
-app.get('/artists/find', artistControllers.findByName);
-
-app.get('/artists/:id', artistControllers.findById);
-
-app.patch('/artists/:id', artistControllers.updateGenre);
-
-app.patch('/artists/:id', artistControllers.updateName);
-
-app.delete('/artists/:id', artistControllers.deleteArtist);
-
-// app.use('/artists', artistRouter);
+app.use('/artists', artistRouter);
 
 app.post('/artists/:artistId/albums', albumControllers.create);
 
@@ -42,7 +28,9 @@ app.delete(`/artists/albums/:albumId`, albumControllers.deleteByIdAndName);
 
 app.delete('/artists/:artistId/albums', albumControllers.deleteByArtistId);
 
-// app.use('/songs', albumRouter);
+//app.use('/', albumRouter);
+
+
 
 app.post(`/albums/:albumId/song`, songControllers.create);
 
