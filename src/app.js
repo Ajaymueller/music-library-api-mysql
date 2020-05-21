@@ -12,23 +12,7 @@ app.use(express.json());
 
 app.use('/artists', artistRouter);
 
-app.post('/artists/:artistId/albums', albumControllers.create);
-
-app.get('/albums', albumControllers.list);
-
-app.get(`/artists/:artistId/albums`, albumControllers.findById);
-
-app.get(`/artists/:artistId/albums/:albumId`, albumControllers.findOneById);
-
-app.patch('/albums/:albumId', albumControllers.updateById);
-
-app.delete(`/artists/:artistId/albums/:albumId`, albumControllers.deleteById);
-
-app.delete(`/artists/albums/:albumId`, albumControllers.deleteByIdAndName);
-
-app.delete('/artists/:artistId/albums', albumControllers.deleteByArtistId);
-
-//app.use('/', albumRouter);
+app.use('/', albumRouter);
 
 
 

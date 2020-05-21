@@ -30,7 +30,7 @@ describe('/albums', () => {
   });
 
   describe('POST /artists/:artistId/albums', () => {
-    xit('creates a new album for a given artist', (done) => {
+    it('creates a new album for a given artist', (done) => {
       request(app)
         .post(`/artists/${artist.id}/albums`)
         .send({
@@ -49,7 +49,7 @@ describe('/albums', () => {
         });
     });
 
-    xit('returns a 404 and does not create an album if the artist does not exist', (done) => {
+    it('returns a 404 and does not create an album if the artist does not exist', (done) => {
       request(app)
         .post('/artists/1234/albums')
         .send({
@@ -82,7 +82,7 @@ describe('/albums', () => {
     });
   
     describe('GET /albums', () => {
-      xit('gets all album records', (done) => {
+      it('gets all album records', (done) => {
         request(app)
           .get('/albums')
           .then((res) => {
@@ -100,7 +100,7 @@ describe('/albums', () => {
 
 
   describe('GET artists/:artistId/albums', () => {
-    xit('gets all album records by artist id', (done) => {
+    it('gets all album records by artist id', (done) => {
       request(app)
         .get(`/artists/${artist.id}/albums`)
         .then((res) => {
@@ -114,7 +114,7 @@ describe('/albums', () => {
         });
     });
 
-    xit('returns a 404 if the artist does not exist', (done) => {
+    it('returns a 404 if the artist does not exist', (done) => {
       request(app)
         .get('/artists/12345/albums')
         .then((res) => {
@@ -125,7 +125,7 @@ describe('/albums', () => {
     });
   });
   describe('GET artists/:artistId/albums/:albumId', () => {
-   xit('gets album record by album id', (done) => {
+   it('gets album record by album id', (done) => {
       const album = albums[0];
       request(app)
         .get(`/artists/${artist.id}/albums/${album.id}`)
@@ -139,7 +139,7 @@ describe('/albums', () => {
         });
     });
 
-    xit('returns a 404 if the artist does not exist', (done) => {
+    it('returns a 404 if the artist does not exist', (done) => {
       request(app)
         .get('/artists/12345/albums/12345')
         .then((res) => {
@@ -150,7 +150,7 @@ describe('/albums', () => {
     });
   });
   describe('PATCH albums/:albumId', () => {
-    xit('updates album by album Id', (done) => {
+    it('updates album by album Id', (done) => {
       const album = albums[0];
       request(app)
         .patch(`/albums/${album.id}`)
@@ -163,7 +163,7 @@ describe('/albums', () => {
               });
     });
   })
-  xit('returns a 404 if the artist does not exist', (done) => {
+  it('returns a 404 if the artist does not exist', (done) => {
     request(app)
       .patch('/albums/12345')
       .send({ year: 2011 })
@@ -175,7 +175,7 @@ describe('/albums', () => {
   });
 });
 describe('DELETE artists/:artistId/albums/:albumId', () => {
-  xit('deletes album record by album id', (done) => {
+  it('deletes album record by album id', (done) => {
     const album = albums[0];
     request(app)
       .delete(`/artists/${artist.id}/albums/${album.id}`)
@@ -187,7 +187,7 @@ describe('DELETE artists/:artistId/albums/:albumId', () => {
         });
       });
   });
-  xit('returns a 404 if the artist does not exist', (done) => {
+  it('returns a 404 if the artist does not exist', (done) => {
     request(app)
       .delete('/artists/12345/albums/12345')
       .then((res) => {
@@ -198,7 +198,7 @@ describe('DELETE artists/:artistId/albums/:albumId', () => {
   });
 });
 describe('DELETE artists/albums/:albumId', () => {
-  xit('deletes album record by album id and name', (done) => {
+  it('deletes album record by album id and name', (done) => {
     const album = albums[0];
     request(app)
       .delete(`/artists/albums/${album.id}`)
@@ -211,7 +211,7 @@ describe('DELETE artists/albums/:albumId', () => {
         });
       });
   });
-  xit('returns a 404 if the artist does not exist', (done) => {
+  it('returns a 404 if the artist does not exist', (done) => {
     request(app)
       .delete('/artists/albums/12345')
       .query({ name: 'randomName'})
