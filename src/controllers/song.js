@@ -43,6 +43,7 @@ exports.findByName = async (req, res) => {
      songData < 1 ? 
     res.status(404).json({ error: 'The song could not be found.'})
     : res.status(200).json(songData);
+    console.log(songData);
   });
 };
 
@@ -55,9 +56,11 @@ exports.findByName = async (req, res) => {
 }*/
 
 exports.findByArtistId = async (req, res) => {
-  const { artistId } = req.params;
-  const songs = await Song.findAll({ where: { artistId: artistId }})
+  const artistId = req.params.artistId
+  const songs = await Song.findAll({ where: { artistId: artistId}})
   const songData = await songs.filter(songs => songs.artistId === artistId);
+  console.log(artistId);
+  console.log(songs);
   console.log(songData);
   songData < 1 ?
   res.status(404).json({ error: 'The song could not be found.'})

@@ -37,14 +37,14 @@ exports.findOneById = async (req, res) => {
   });
 };
 
-exports.findByYear = async (req, res) => { //not working!!
+exports.findByYear = async (req, res) => {
   const { year } = req.query;
-  const albums = await Album.findAll({ where: { year: year }})
-  const albumData = await albums.filter(album => album.year === year)
+  const albums = await Album.findAll({ where: { year: Number(year) }})
+  const albumData = await albums.filter(album => album.year === Number(year))
     albumData < 1 ?
     res.status(404).json({ error: 'The album could not be found.'})
     : res.status(200).json(albumData)
-  }
+  };
 
   exports.findByName = async (req, res) => {
     const { name } = req.query;
@@ -112,19 +112,15 @@ exports.deleteById = async (req, res) => {
 
   exports.deleteByArtistId = async(req, res) => {
     const { artistId } = req.params;
-    Artist.findByPk(artistId).then(artist => {
-      if (!artist) {
-        res.status(404).json({ error: 'The album could not be found.' })
-      } else {
-        if (artistId === Album.artistId) {
-          Album.destroy({where: {artistId: artistId}}).then(album => res.status(204).json(album))
-          console.log(album)
-        } else {
-          res.status(404).json({ error: 'The album could not be found.' })
-        }
+        Album.findAll({where: {artistId: artistId}}).then(album => {
+          if (!album) {
+            res.status(404).json({ error: 'The album could not be found.' })
+          } else {
+            Album.destroy({where: {artistId: artistId}}).then(album => res.status(204).json(album))
+            console.log(album);
+          }
+        })
       }
-    })
-  }
 
   /*const albums = await Album.findAll({ where: { artistId: artistId }});
     const albumData = await albums.filter(album => album.artistId === artistId);

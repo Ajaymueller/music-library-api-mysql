@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album, Song } = require('../src/sequelize');
 
-describe('/songs', () => {
+describe.only('/songs', () => {
   let artist;
   let album;
 
@@ -155,15 +155,15 @@ describe('/songs', () => {
       });
     })
     describe('GET artists/:artistId/songs', () => {
-      xit('gets all songs by a specific artist', (done) => {
+      xit('gets all songs by a specific artist id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/artists/${artist.Id}/songs`)
         .then((res) => {
-          const expected = songs.forEach((song) => {
-            songs.find((a) => a.id === song.artistId);
+          songs.forEach((song) => {
+            const expected = songs.find((a) => a.id === song.artistId);
             expect(song.name).to.equal(expected.name);
-            expect(song.artistId).to.equal(artist.Id);
+            //expect(song.artistId).to.equal(artist.Id);
           });
           expect(res.status).to.equal(200);
           done();
