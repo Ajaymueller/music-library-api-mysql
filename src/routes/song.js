@@ -13,6 +13,8 @@ router.get('/song/:songId', songControllers.findOneById);
 
 router.get('/song/find/name', songControllers.findByName);
 
+router.get('/artists/:artistId/songs', songControllers.findByArtistId);
+
 router.patch('/song/:songId', songControllers.update);
 
 router.delete('/song/:songId', songControllers.delete);

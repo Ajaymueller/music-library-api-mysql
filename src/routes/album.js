@@ -11,9 +11,9 @@ router.get('/artists/:artistId/albums', ablbumControllers.findById);
 
 router.get(`/artists/:artistId/albums/:albumId`, ablbumControllers.findOneById);
 
-router.get('/albums/find/year', ablbumControllers.findByYear);
-
 router.get('/albums/find/name', ablbumControllers.findByName);
+
+router.get('/albums/year', ablbumControllers.findByYear);
 
 router.patch('/albums/:albumId', ablbumControllers.updateById);
 

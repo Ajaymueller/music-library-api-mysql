@@ -39,11 +39,29 @@ exports.findOneById = async (req, res) => {
 exports.findByName = async (req, res) => {
   const { name } = req.query;
   Song.findAll({where: { name: name}}).then(songs => {
-    const songData = songs.find(song => song.name === name)
-    ! songData ? 
+    const songData = songs.filter(song => song.name === name)
+     songData < 1 ? 
     res.status(404).json({ error: 'The song could not be found.'})
     : res.status(200).json(songData);
   });
+};
+
+/*exports.findByArtistId = async (req, res) => {
+  const { artistId } = req.params;
+  await Artist.findByPk(artistId).then(artist => {
+    ! artist ? res.status(404).json({ error: 'The song could not be found.' })
+    : Song.findAll({ where: { artistId: artistId }}).then(song => res.status(200).json(song));
+})
+}*/
+
+exports.findByArtistId = async (req, res) => {
+  const { artistId } = req.params;
+  const songs = await Song.findAll({ where: { artistId: artistId }})
+  const songData = await songs.filter(songs => songs.artistId === artistId);
+  console.log(songData);
+  songData < 1 ?
+  res.status(404).json({ error: 'The song could not be found.'})
+  : res.status(200).json(songData);
 };
 
 /*exports.getSongWithSpecificName = async (req, res) => {
