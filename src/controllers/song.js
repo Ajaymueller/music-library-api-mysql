@@ -56,16 +56,80 @@ exports.findByName = async (req, res) => {
 }*/
 
 exports.findByArtistId = async (req, res) => {
-  const artistId = req.params.artistId
-  const songs = await Song.findAll({ where: { artistId: artistId}})
-  const songData = await songs.filter(songs => songs.artistId === artistId);
-  console.log(artistId);
-  console.log(songs);
-  console.log(songData);
-  songData < 1 ?
+  const { artistId } = req.params;
+  const songs = await Song.findAll({ where: { artistId: artistId }})
+  //.then(([songs]) => {
+   // ! songs ? res.status(404).json({ error: 'The song could not be found.'})
+    //: res.status(200).json(songs);
+  //})
+  //console.log(songs);
+
+  const songData = await songs.filter(songs => {
+    return songs.artistId === artistId });
+   songData  < 1 ?
   res.status(404).json({ error: 'The song could not be found.'})
   : res.status(200).json(songData);
+  //console.log(artistId);
+  //console.log(songs);
+ // console.log(songs);
+}
+
+
+/*exports.findByArtistId = async (req, res) => {
+  const { artistId } = req.params; 
+  await Artist.findByPk(artistId).then(artist => {
+    ! artist ? res.status(404).json({ error: 'The song could not be found.' })
+    : Song.findAll({ where: { artistId: artistId }}).then(song => res.status(200).json(song));
+  });
 };
+*/
+
+/*exports.findByArtistId = async (req, res) => {
+  const { artistId } = req.params;
+  const { albumId } = req.params; 
+  Artist.findByPk(artistId).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The song could not be found.'})
+    } else {
+      Album.findByPk(albumId).then(album => {
+        if (!album) {
+          res.status(404).json({ error: 'The song could not be found.'})
+        } else {
+          const songs = Song.findAll({ where: { artistId: artistId}})
+          const songData = songs.filter(songs => songs.artistId === artistId);
+          
+          res.status(404).json({ error: 'The song could not be found.'})
+          : res.status(200).json(songData);
+          console.log(songData);
+        }
+      })
+    }
+  })
+}*/
+
+/*exports.findByArtistId = async (req, res) => {
+  const { artistId } = req.params;
+  //const { albumId } = req.params; 
+  Artist.findByPk(artistId).then(artist => {
+    if (!artist) {
+      res.status(404).json({ error: 'The song could not be found.'})
+    } else {
+      Album.findAll({where: {artistId: artistId}}).then(album => {
+        if (!album) {
+          res.status(404).json({ error: 'The song could not be found.'})
+        } else {
+          const songs = Song.findAll({ where: { artistId: artistId}})
+          const songData = songs.filter(songs => songs.artistId === artistId)
+          if (songData < 1) {
+            res.status(404).json({ error: 'The song could not be found.'})
+          } else {
+            res.status(200).json(songData);
+          }
+        }
+      })
+    }
+  })
+}*/
 
 /*exports.getSongWithSpecificName = async (req, res) => {
   await Song.findAll({ where: { name: {[Op.like]: req.query}}})

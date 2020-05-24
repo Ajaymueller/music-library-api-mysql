@@ -155,21 +155,20 @@ describe.only('/songs', () => {
       });
     })
     describe('GET artists/:artistId/songs', () => {
-      xit('gets all songs by a specific artist id', (done) => {
+      it('gets all songs by a specific artist id', (done) => {
         const song = songs[0];
         request(app)
-        .get(`/artists/${artist.Id}/songs`)
+        .get(`/artists/${artist.id}/songs`)
         .then((res) => {
           songs.forEach((song) => {
             const expected = songs.find((a) => a.id === song.artistId);
             expect(song.name).to.equal(expected.name);
-            //expect(song.artistId).to.equal(artist.Id);
           });
           expect(res.status).to.equal(200);
           done();
         })
       })
-      xit('returns a 404 if the songs do not exist', (done) => {
+      it('returns a 404 if the songs do not exist', (done) => {
         request(app)
           .get(`/artists/12345/songs`)
           .then((res) => {
@@ -179,30 +178,6 @@ describe.only('/songs', () => {
           });
       });
     })
-    describe('GET song', () => {
-      xit('gets all songs with a specific word in the name', (done) => {
-        request(app)
-        .get('/song')
-        .query({ name: '%song%' })
-        .then((res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body.length).to.equal(2);
-
-
-        });
-      });
-      xit('returns a 404 if there is no song returned', (done) => {
-        request(app)
-        .get('/song')
-        .query({ name: '%randomWord%' })
-        .then((res) => {
-          expect(res.status).to.equal(404);
-          expect(res.body.error).to.equal('The song could not be found.');
-          done();
-        })
-      })
-    });
-
 
 describe('/song/:songId', () => {
   xit('updates a song name by song id', (done) => {

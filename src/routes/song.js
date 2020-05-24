@@ -7,13 +7,17 @@ router.post(`/albums/:albumId/song`, songControllers.create);
 
 router.get('/song', songControllers.listSongs);
 
+router.get('/artists/:artistId/songs', songControllers.findByArtistId);
+
 router.get(`/albums/:albumId/song`, songControllers.findAllById);
 
 router.get('/song/:songId', songControllers.findOneById);
 
 router.get('/song/find/name', songControllers.findByName);
 
-router.get('/artists/:artistId/songs', songControllers.findByArtistId);
+//router.get('/artists/:artistId/songs', songControllers.findByArtistId);
+
+//router.get('/artists/:artistId/songs', songControllers.findByArtistId);
 
 router.patch('/song/:songId', songControllers.update);
 

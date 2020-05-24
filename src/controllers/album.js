@@ -88,43 +88,70 @@ exports.deleteById = async (req, res) => {
     });
   };
 
-  /*exports.deleteByArtistId = async (req, res) => {
-    const { artistId } = req.params;
-    Artist.findByPk(artistId).then(artist => {
-      ! artist ? res.status(404).json({ error: 'The album could not be found.' })
-      : artistId === Album.artistId ? 
-      Album.destroy({ where: { artistId: artistId }}).then(destroyedAlbum => res.status(204).json(destroyedAlbum))
-      : res.status(404).json({ error: 'The album could not be found.'})
-    });
-  };*/
-
-  /*exports.deleteByArtistId = async (req, res) => {
-    const { artistId } = req.params; 
-    await Artist.findByPk(artistId).then(artist => {
-      ! artist ? res.status(404).json({ error: 'The album could not be found.' })
-      : Album.findAll({where: {artistId: artistId}}).then(albums => {
-        ! albums ? res.status(404).json({ error: 'The album could not be found.'})
-        : Album.destroy({where: {artistId: artistId}}).then(album => res.status(204).json(album))
-        console.log(album);
+    exports.deleteByArtistId = async (req, res) => {
+      const { artistId } = req.params;
+      Artist.findByPk(artistId).then(artist => {
+        if (!artist) {
+          res.status(404).json({ error: 'The album could not be found.' })
+        } else {
+          Album.findAll({ where: {artistId: artistId }}).then(album => {
+            if (!album) {
+              res.status(404).json({ error: 'The album could not be found.' })
+            } else {
+              queryInterface.removeConstraint('Songs', 'Songs_ibfk_27', {});
+      
+              const destroyedAlbum = Album.destroy({ truncate: true }).then(([destroyedAlbum]) => {
+                res.status(204).json(destroyedAlbum);
+              })
+            }
+          })
+        }
       })
+    } 
+
+    /*exports.deleteByArtistId = async (req, res) => {
+      const { artistId } = req.params;
+      const album = Album.findAll({where: { artistId: artistId }});
+      Artist.findByPk(artistId).then(artist => {
+        if (!artist) {
+          res.status(404).json({ error: 'The album could not be found.' })
+        } else {
+          if (artistId === album) {
+            Album.destroy({ where : {}}).then(destroyedAlbum => res.status(204).json(destroyedAlbum))
+            console.log(artist);
+          } else {
+            res.status(404).json({ error: 'The album could not be found.'})
+          }
+        }
+      });*/
+
+    /*exports.deleteByArtistId = async (req, res) => {
+      const { artistId } = req.params;
+      Album.destroy({ where: {artistId: artistId} }).then(album => {
+        if (!album) {
+        res.status(404).json({ error: 'The album could not be found.' });
+        } else {
+        res.status(204).json(album)
+        }
     })
   }*/
 
-  exports.deleteByArtistId = async(req, res) => {
+  exports.deleteByArtistId = async (req, res) => {
     const { artistId } = req.params;
-        Album.findAll({where: {artistId: artistId}}).then(album => {
+    Artist.findByPk(artistId).then(artist => {
+      if (!artist) {
+        res.status(404).json({ error: 'The album could not be found.' })
+      } else {
+        Album.findAll({ where: {artistId: artistId }}).then(album => {
           if (!album) {
             res.status(404).json({ error: 'The album could not be found.' })
           } else {
-            Album.destroy({where: {artistId: artistId}}).then(album => res.status(204).json(album))
-            console.log(album);
+    
+            const destroyedAlbum = Album.destroy({ where: { artistId : artistId}}).then(([destroyedAlbum]) => {
+              res.status(204).json(destroyedAlbum);
+            })
           }
         })
       }
-
-  /*const albums = await Album.findAll({ where: { artistId: artistId }});
-    const albumData = await albums.filter(album => album.artistId === artistId);
-    albumData < 1 ?
-    res.status(404).json({ error: 'The album could not be found.'})
-    : Album.destroy({}).then(destroyedAlbum => res.status(204).json(destroyedAlbum))
-    */
+    })
+  } 
