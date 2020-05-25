@@ -1,7 +1,7 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
 
-exports.create = async (req, res) => {
+exports.createAlbum = async (req, res) => {
   const { artistId } = req.params;
   const artist = await Artist.findByPk(artistId);
  ! artist ? res.status(404).json({ error: 'The artist could not be found.' }) 
@@ -12,11 +12,11 @@ exports.create = async (req, res) => {
 })
 };
 
-exports.list = async (req, res) => {
+exports.listAlbums = async (req, res) => {
   Album.findAll({ where: {}}).then(albums => res.status(200).json(albums));
 };
 
-exports.findById = async (req, res) => {
+exports.findByArtistId = async (req, res) => {
   const { artistId } = req.params;
   await Artist.findByPk(artistId).then(artist => {
     ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
@@ -37,7 +37,7 @@ exports.findOneById = async (req, res) => {
   });
 };
 
-exports.findByYear = async (req, res) => {
+exports.findByAlbumYear = async (req, res) => {
   const { year } = req.query;
   const albums = await Album.findAll({ where: { year: Number(year) }})
   const albumData = await albums.filter(album => album.year === Number(year))
@@ -46,7 +46,7 @@ exports.findByYear = async (req, res) => {
     : res.status(200).json(albumData)
   };
 
-  exports.findByName = async (req, res) => {
+  exports.findByAlbumName = async (req, res) => {
     const { name } = req.query;
     const albums = await Album.findAll({ where: { name: name }})
     const albumData = await albums.filter(album => album.name === name);
@@ -55,7 +55,7 @@ exports.findByYear = async (req, res) => {
         : res.status(200).json(albumData);
   }
 
-exports.updateById = async (req, res) => {
+exports.updateByAlbumId = async (req, res) => {
   const { albumId } = req.params;
   await Album.findByPk(albumId).then(album => {
       ! album ? res.status(404).json({ error: 'The album could not be found.' })
@@ -64,7 +64,7 @@ exports.updateById = async (req, res) => {
     });
   };
 
-exports.deleteById = async (req, res) => {
+exports.deleteByAlbumId = async (req, res) => {
     const { artistId } = req.params;
     const { albumId } = req.params;
     await Artist.findByPk(artistId).then(artist => {

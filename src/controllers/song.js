@@ -1,24 +1,26 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
 const { Song } = require('../sequelize');
-//const Op = Sequelize.Op;
 
 exports.createSong = async (req, res) => {
   const  { albumId } = req.params;
   const { artist } = req.body;
- try {
-  const createSong = await Song.create(req.body);
-  const song = await createSong.setAlbum(Number(albumId));
-  const albumSong = await song.setArtist(artist);
-  res.status(201).json(albumSong);
-} catch(error) {
-  console.log(error);
-} 
+  const album = await Album.findByPk(albumId);
+
+  !album ?
+  res.status(404).json({ error: 'The album could not be found.' })
+  : Song.create(req.body).then(createdSong => {
+    createdSong.setAlbum(Number(albumId)).then(linkedSong => {
+      linkedSong.setArtist(artist).then(finalSong => {
+        res.status(201).json(finalSong);
+      });
+  });
+});
 };
 
 exports.listSongs = async (req, res) => {
-  Song.findAll({where: {}}).then(songs => res.status(200).json(songs));
-};
+  Song.findAll({where: {} }).then(songs => res.status(200).json(songs));
+  };
 
 exports.findAllSongsByAlbumId = async (req, res) => {
   const { albumId } = req.params; 
