@@ -86,30 +86,32 @@ describe.only('/songs', () => {
     });
 
     describe('GET albums/:albumId/songs', () => {
-      xit('gets all songs by album id', (done) => {
+      it('gets all songs by album id', (done) => {
         request(app)
           .get(`/albums/${album.id}/song`)
           .then((res) => {
-            songs.forEach((song) => {
-              const expected = songs.find((a) => a.id === song.id);
-              expect(song.name).to.equal(expected.name);
-            });
             expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(2);
+            const expected = ['Song1', 'Song2'];
+            songs.forEach((song, index) => {
+              expect(song.name).to.equal(expected[index]);
+              expect(song.albumId).to.equal(album.id);
+            });
             done();
           });
       });
-     xit('returns a 404 if the artist does not exist', (done) => {
+     it('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get('/albums/12345/song')
           .then((res) => {
             expect(res.status).to.equal(404);
-            expect(res.body.error).to.equal('The album could not be found.');
+            expect(res.body.error).to.equal('The song could not be found.');
             done();
           });
       });
     });
     describe('GET song/:songId', () => {
-      xit('gets one song by song id', (done) => {
+      xit('gets song by song id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/song/${song.id}`)
@@ -160,9 +162,10 @@ describe.only('/songs', () => {
         request(app)
         .get(`/artists/${artist.id}/songs`)
         .then((res) => {
-          songs.forEach((song) => {
-            const expected = songs.find((a) => a.id === song.artistId);
-            expect(song.name).to.equal(expected.name);
+          expect(res.body.length).to.equal(2);
+          const expected = ['Song1', 'Song2'];
+          res.body.forEach((song, index) => {
+            expect(song.name).to.equal(expected[index]);
           });
           expect(res.status).to.equal(200);
           done();

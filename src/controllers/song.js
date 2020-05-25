@@ -3,7 +3,7 @@ const { Artist } = require('../sequelize');
 const { Song } = require('../sequelize');
 //const Op = Sequelize.Op;
 
-exports.create = async (req, res) => {
+exports.createSong = async (req, res) => {
   const  { albumId } = req.params;
   const { artist } = req.body;
  try {
@@ -20,15 +20,15 @@ exports.listSongs = async (req, res) => {
   Song.findAll({where: {}}).then(songs => res.status(200).json(songs));
 };
 
-exports.findAllById = async (req, res) => {
+exports.findAllSongsByAlbumId = async (req, res) => {
   const { albumId } = req.params; 
-  await Album.findByPk(albumId).then(album => {
-    ! album ? res.status(404).json({ error: 'The album could not be found.' })
-    : Song.findAll({ where: { albumId: albumId }}).then(song => res.status(200).json(song));
-  });
+  const songs = await Song.findAll({where: { albumId: albumId }});
+  songs.length < 1 ? 
+  res.status(404).json({ error: 'The song could not be found.'}) 
+  : res.status(200).json(songs);
 };
 
-exports.findOneById = async (req, res) => {
+exports.findSongBySongId = async (req, res) => {
   const { songId } = req.params; 
   await Song.findByPk(songId).then(song => {
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
@@ -36,7 +36,7 @@ exports.findOneById = async (req, res) => {
   });
 };
 
-exports.findByName = async (req, res) => {
+exports.findBySongName = async (req, res) => {
   const { name } = req.query;
   Song.findAll({where: { name: name }}).then(songs => {
     const songData = songs.filter(song => song.name === name)
@@ -46,38 +46,15 @@ exports.findByName = async (req, res) => {
   });
 };
 
-exports.findByArtistId = async (req, res) => {
+exports.findSongByArtistId = async (req, res) => {
   const { artistId } = req.params;
   const songs = await Song.findAll({ where: { artistId: artistId }})
-  //.then(([songs]) => {
-   // ! songs ? res.status(404).json({ error: 'The song could not be found.'})
-    //: res.status(200).json(songs);
-  //})
-  //console.log(songs);
+   songs.length  < 1 ?
+    res.status(404).json({ error: 'The song could not be found.'}) 
+    : res.status(200).json(songs);
+};
 
-  const songData = await songs.filter(songs => {
-    return songs.albumId === artistId });
-   if (songData  < 1) {
-    res.status(404).json({ error: 'The song could not be found.'})
-   } else {
-    //const result = JSON.parse(res[0])
-    //console.log(result);
-    const response = JSON.stringify(songs);
-    console.log(response);
-    res.status(200).send(songData);
-     }
-  //res.status(200).json(response);
-  //console.log(artistId);
-  //console.log(songs);
- // console.log(songs);
-}
-
-
-/*exports.getSongWithSpecificName = async (req, res) => {
-  await Song.findAll({ where: { name: {[Op.like]: req.query}}})
-};*/
-
-exports.update = async (req, res) => {
+exports.updateSongBySongId = async (req, res) => {
   const { songId } = req.params;
   await Song.findByPk(songId).then(song => {
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
@@ -87,7 +64,7 @@ exports.update = async (req, res) => {
 });
 };
 
-exports.delete = async (req, res) => {
+exports.deleteSongBySongId = async (req, res) => {
   const { songId } = req.params; 
   await Song.findByPk(songId).then(song => {
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
