@@ -155,7 +155,7 @@ describe.only('/songs', () => {
       });
     })
     describe('GET artists/:artistId/songs', () => {
-      it('gets all songs by a specific artist id', (done) => {
+      xit('gets all songs by a specific artist id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/artists/${artist.id}/songs`)
@@ -168,7 +168,7 @@ describe.only('/songs', () => {
           done();
         })
       })
-      it('returns a 404 if the songs do not exist', (done) => {
+      xit('returns a 404 if the songs do not exist', (done) => {
         request(app)
           .get(`/artists/12345/songs`)
           .then((res) => {

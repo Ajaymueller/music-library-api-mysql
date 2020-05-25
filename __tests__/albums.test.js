@@ -273,20 +273,20 @@ describe('DELETE artists/albums/:albumId', () => {
   });
 });
 describe('DELETE artists/:artistId/albums', () => {
-  xit('deletes all albums by artist Id', (done) => {
+ xit('deletes all albums by artist Id', (done) => {
     const album = albums[0];
     request(app)
       .delete(`/artists/${artist.id}/albums`)
       .then((res) => {
         expect(res.status).to.equal(204);
-        Artist.findByPk(artist.id).then((updatedAlbum) => {
-        expect(updatedAlbum).to.equal(null)
+        Album.findAll({ where: { artistId: artist.id }}).then((updatedAlbum) => {
+        expect(updatedAlbum).to.deep.equal([]);
         done();
         });
       });
     })
   xit('returns a 404 if the albums do not exist', (done) => {
-    request(app)
+   request(app)
       .delete('/artists/12345/albums')
       .then((res) => {
         expect(res.status).to.equal(404);

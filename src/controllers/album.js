@@ -88,70 +88,11 @@ exports.deleteById = async (req, res) => {
     });
   };
 
-    exports.deleteByArtistId = async (req, res) => {
-      const { artistId } = req.params;
-      Artist.findByPk(artistId).then(artist => {
-        if (!artist) {
-          res.status(404).json({ error: 'The album could not be found.' })
-        } else {
-          Album.findAll({ where: {artistId: artistId }}).then(album => {
-            if (!album) {
-              res.status(404).json({ error: 'The album could not be found.' })
-            } else {
-              queryInterface.removeConstraint('Songs', 'Songs_ibfk_27', {});
-      
-              const destroyedAlbum = Album.destroy({ truncate: true }).then(([destroyedAlbum]) => {
-                res.status(204).json(destroyedAlbum);
-              })
-            }
-          })
-        }
-      })
-    } 
-
-    /*exports.deleteByArtistId = async (req, res) => {
-      const { artistId } = req.params;
-      const album = Album.findAll({where: { artistId: artistId }});
-      Artist.findByPk(artistId).then(artist => {
-        if (!artist) {
-          res.status(404).json({ error: 'The album could not be found.' })
-        } else {
-          if (artistId === album) {
-            Album.destroy({ where : {}}).then(destroyedAlbum => res.status(204).json(destroyedAlbum))
-            console.log(artist);
-          } else {
-            res.status(404).json({ error: 'The album could not be found.'})
-          }
-        }
-      });*/
-
-    /*exports.deleteByArtistId = async (req, res) => {
-      const { artistId } = req.params;
-      Album.destroy({ where: {artistId: artistId} }).then(album => {
-        if (!album) {
-        res.status(404).json({ error: 'The album could not be found.' });
-        } else {
-        res.status(204).json(album)
-        }
-    })
-  }*/
-
   exports.deleteByArtistId = async (req, res) => {
     const { artistId } = req.params;
-    Artist.findByPk(artistId).then(artist => {
-      if (!artist) {
+    Album.destroy({ where: { artistId: artistId }}).then(album => {
+      ! album ?
         res.status(404).json({ error: 'The album could not be found.' })
-      } else {
-        Album.findAll({ where: {artistId: artistId }}).then(album => {
-          if (!album) {
-            res.status(404).json({ error: 'The album could not be found.' })
-          } else {
-    
-            const destroyedAlbum = Album.destroy({ where: { artistId : artistId}}).then(([destroyedAlbum]) => {
-              res.status(204).json(destroyedAlbum);
-            })
-          }
-        })
-      }
-    })
-  } 
+        : res.status(204).json(album) 
+    });
+  };
