@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album } = require('../src/sequelize');
 
-describe.only('/albums', () => {
+describe('/albums', () => {
   let artist;
 
   before(async () => {

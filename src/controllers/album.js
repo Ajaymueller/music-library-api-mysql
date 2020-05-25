@@ -13,7 +13,8 @@ exports.createAlbum = async (req, res) => {
 };
 
 exports.listAlbums = async (req, res) => {
-  Album.findAll({ where: {}}).then(albums => res.status(200).json(albums));
+  Album.findAll({ where: {}}).then(albums => 
+    res.status(200).json(albums));
 };
 
 exports.findByArtistId = async (req, res) => {

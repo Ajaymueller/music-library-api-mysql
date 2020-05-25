@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album, Song } = require('../src/sequelize');
 
-describe.only('/songs', () => {
+describe('/songs', () => {
   let artist;
   let album;
 
@@ -38,7 +38,7 @@ describe.only('/songs', () => {
   });
 
   describe('POST /albums/:albumId/song', () => {
-    it('creates a new song under an album', (done) => {
+    xit('creates a new song under an album', (done) => {
       request(app)
         .post(`/albums/${album.id}/song`)
         .send({
@@ -55,7 +55,7 @@ describe.only('/songs', () => {
           done();
         });
     });
-    it('returns a 404 and does not create a song if the album does not exist', (done) => {
+    xit('returns a 404 and does not create a song if the album does not exist', (done) => {
       request(app)
         .post('/albums/1234/song')
         .send({
@@ -87,7 +87,7 @@ describe.only('/songs', () => {
     });
     
     describe('GET /songs', () => {
-      it('gets all song records', (done) => {
+      xit('gets all song records', (done) => {
         const song = songs[0]
         request(app)
           .get('/song')
@@ -104,7 +104,7 @@ describe.only('/songs', () => {
     });
 
     describe('GET albums/:albumId/songs', () => {
-      it('gets all songs by album id', (done) => {
+      xit('gets all songs by album id', (done) => {
         request(app)
           .get(`/albums/${album.id}/song`)
           .then((res) => {
@@ -118,7 +118,7 @@ describe.only('/songs', () => {
             done();
           });
       });
-     it('returns a 404 if the artist does not exist', (done) => {
+     xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get('/albums/12345/song')
           .then((res) => {
@@ -129,7 +129,7 @@ describe.only('/songs', () => {
       });
     });
     describe('GET song/:songId', () => {
-      it('gets song by song id', (done) => {
+      xit('gets song by song id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/song/${song.id}`)
@@ -140,7 +140,7 @@ describe.only('/songs', () => {
           done();
         })
       })
-      it('returns a 404 if the song does not exist', (done) => {
+      xit('returns a 404 if the song does not exist', (done) => {
         request(app)
         .get(`/song/12345`)
         .then((res) => {
@@ -151,7 +151,7 @@ describe.only('/songs', () => {
       })
     })
     describe('GET song', () => {
-      it('gets songs by song name', (done) => {
+      xit('gets songs by song name', (done) => {
         const song = songs[0];
         request(app)
         .get('/song/find/name')
@@ -163,7 +163,7 @@ describe.only('/songs', () => {
           done();
         })
       })
-      it('returns a 404 if the artist does not exist', (done) => {
+      xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get(`/song/find/name`)
           .query({ name: 'randomName' })
@@ -175,7 +175,7 @@ describe.only('/songs', () => {
       });
     })
     describe('GET artists/:artistId/songs', () => {
-      it('gets all songs by a specific artist id', (done) => {
+      xit('gets all songs by a specific artist id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/artists/${artist.id}/songs`)
@@ -189,7 +189,7 @@ describe.only('/songs', () => {
           done();
         })
       })
-      it('returns a 404 if the songs do not exist', (done) => {
+      xit('returns a 404 if the songs do not exist', (done) => {
         request(app)
           .get(`/artists/12345/songs`)
           .then((res) => {
@@ -201,7 +201,7 @@ describe.only('/songs', () => {
     })
 
 describe('/song/:songId', () => {
-  it('updates a song name by song id', (done) => {
+  xit('updates a song name by song id', (done) => {
     const song = songs[0];
     request(app)
     .patch(`/song/${song.id}`)
@@ -214,7 +214,7 @@ describe('/song/:songId', () => {
     })
   })
 })
-it('returns a 404 if the song does not exist', (done) => {
+xit('returns a 404 if the song does not exist', (done) => {
   request(app)
   .patch(`/song/12345`)
   .send({ name: 'randomName' })
@@ -226,7 +226,7 @@ it('returns a 404 if the song does not exist', (done) => {
 })
 });
 describe('DELETE song/:songId', () => {
- it('deletes one song by song id', (done) => {
+ xit('deletes one song by song id', (done) => {
     const song = songs[0];
     request(app)
       .delete(`/song/${song.id}`)
@@ -238,7 +238,7 @@ describe('DELETE song/:songId', () => {
         });
       });
   });
-  it('returns a 404 if the artist does not exist', (done) => {
+  xit('returns a 404 if the artist does not exist', (done) => {
     request(app)
       .delete('/song/12345')
       .then((res) => {
