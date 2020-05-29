@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const schema = {
-    name: DataTypes.STRING,
-    year: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      year: {
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+      },
   };
 
   const Album = sequelize.define('Album', schema);
