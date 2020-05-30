@@ -1,5 +1,6 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
+const { getAllItems } = require('./helpers');
 
 exports.createAlbum = async (req, res) => {
   const { artistId } = req.params;
@@ -12,10 +13,12 @@ exports.createAlbum = async (req, res) => {
 })
 };
 
-exports.listAlbums = async (req, res) => {
+/*exports.listAlbums = async (req, res) => {
   Album.findAll({ where: {}}).then(albums => 
     res.status(200).json(albums));
-};
+};*/
+
+exports.listAlbums = (req, res) => getAllItems(res, req);
 
 exports.findByArtistId = async (req, res) => {
   const { artistId } = req.params;

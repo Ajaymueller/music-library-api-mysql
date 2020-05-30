@@ -1,12 +1,15 @@
 const { Artist } = require('../sequelize');
+const { getAllItems } = require('./helpers');
 
 exports.createArtist = (req, res) => {
   Artist.create(req.body).then(user => res.status(201).json(user));
 };
 
-exports.listArtists = (req, res) => {
+/*exports.listArtists = (req, res) => {
   Artist.findAll({ where: {}}).then(artists => res.status(200).json(artists));
-};
+};*/
+
+exports.listArtists = (req, res) => getAllItems(res, artist);
 
 exports.findByArtistId = (req, res) => {
   const { id } = req.params;

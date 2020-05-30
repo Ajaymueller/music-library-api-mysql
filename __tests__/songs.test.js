@@ -226,7 +226,7 @@ xit('returns a 404 if the song does not exist', (done) => {
 })
 });
 describe('DELETE song/:songId', () => {
- xit('deletes one song by song id', (done) => {
+ xit('deletes song by song id', (done) => {
     const song = songs[0];
     request(app)
       .delete(`/song/${song.id}`)
