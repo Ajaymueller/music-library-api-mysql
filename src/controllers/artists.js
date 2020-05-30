@@ -1,68 +1,67 @@
 const { Artist } = require('../sequelize');
 const { getAllItems } = require('./helpers');
 
-exports.createArtist = (req, res) => {
-  Artist.create(req.body).then(user => res.status(201).json(user))
-  .catch((error) => {
-    const errorMessages = error.errors.map((e) => e.message);
+exports.createArtist = async (req, res) => {
+  try {
+    const user = await Artist.create(req.body)
+    res.status(201).json(user)
+  } catch (error) {
+    const errorMessages = await error.errors.map((e) => e.message);
     return res.status(400).json({ errors: errorMessages});
-  });
+  };
 };
 
-exports.listArtists = (req, res) => {
-  Artist.findAll({ where: {}}).then(artists => res.status(200).json(artists));
+exports.listArtists = async (req, res) => {
+  const artists = await Artist.findAll({ where: {} });
+  res.status(200).json(artists);
 };
 
 //exports.listArtists = (req, res) => getAllItems(res, artist);
 
-exports.findByArtistId = (req, res) => {
+exports.findByArtistId = async (req, res) => {
   const { id } = req.params;
-  Artist.findOne({ where: { id } }).then(artist => {
-    ! artist ? res.status(404).json({ error: 'The artist could not be found.' })
-    : res.status(200).json(artist);
-  });
-};
+  const artist = await Artist.findOne({ where: { id } })
+  ! artist ?
+  res.status(404).json({ error: 'The artist could not be found.' })
+  : res.status(200).json(artist);
+  };
 
-exports.findByArtistName = (req, res) => {
+exports.findByArtistName = async (req, res) => {
   const { name } = req.query;
-  Artist.findAll({ where: { name: name }}).then(artists => {
-    const artistData = artists.find(artist => artist.name === name)
-    artistData ? 
-    res.status(200).json(artistData)
-    : res.status(404).json({ error: 'The artist could not be found.' })
-  });
+  const artists = await Artist.findAll({ where: { name: name }})
+  artists.length < 1 ?
+  res.status(404).json({ error: 'The artist could not be found.' })
+  : res.status(200).json(artists);
 };
 
-exports.findByArtistGenre = (req, res) => {
+exports.findByArtistGenre = async (req, res) => {
   const { genre } = req.query; 
-  Artist.findAll({ where: { genre: genre }}).then(artists => {
-    const artistData = artists.find(artist => artist.genre === genre)
-    artistData ?
-    res.status(200).json(artistData)
-    : res.status(404).json({ error: 'The artist could not be found.' })
-});
-};
+  const artists = await Artist.findAll({ where: { genre: genre }});
+  artists.length < 1 ?
+  res.status(404).json({ error: 'The artist could not be found.' })
+  : res.status(200).json(artists)
+}
 
-exports.updateArtistGenre = (req, res) => {
+exports.updateArtistGenre = async (req, res) => {
   const { id } = req.params;
-  Artist.update(req.body, { where: { id }}).then(([rowsUpdated]) => {
+  await Artist.update(req.body, { where: { id: id }}).then(([rowsUpdated]) => {
     !rowsUpdated ? res.status(404).json({ error: 'The artist could not be found.' })
-    : res.status(200).json(rowsUpdated);
+  :  res.status(200).json(rowsUpdated);
   });
 };
 
-exports.updateArtistName = (req, res) => {
+exports.updateArtistName = async (req, res) => {
   const { id } = req.params;
-  Artist.update(req.body, { id }).then(([rowsUpdated]) => {
+  await Artist.update(req.body, { where: { id: id }}).then(([rowsUpdated]) => {
     !rowsUpdated ? res.status(404).json({ error: 'The artist could not be found.' })
-    : res.status(200).json(rowsUpdated);
+  :  res.status(200).json(rowsUpdated);
   });
 };
 
-exports.deleteArtistByArtistId = (req, res) => {
+exports.deleteArtistByArtistId = async (req, res) => {
   const { id } = req.params;
-  Artist.destroy({ where: { id }}).then(artist => {
-    !artist ? res.status(404).json({ error: 'The artist could not be found.' })
-    : res.status(204).json(artist)
-  })
+  const artist = await Artist.destroy({ where: { id }});
+  ! artist ?
+  res.status(404).json({ error: 'The artist could not be found.' })
+  : res.status(204).json(artist)
 };

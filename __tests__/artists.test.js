@@ -22,7 +22,7 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    xit('creates a new artist in the database', async () => {
+    it('creates a new artist in the database', async () => {
       const response = await request(app).post('/artists').send({
         name: 'Tame Impala',
         genre: 'Rock',
@@ -35,7 +35,7 @@ describe('/artists', () => {
       await expect(insertedArtistRecords.name).to.equal('Tame Impala');
       await expect(insertedArtistRecords.genre).to.equal('Rock');
     });
-    xit('cannot create the artist if there is no name or genre', (done) => {
+    it('cannot create the artist if there is no name or genre', (done) => {
       request(app)
       .post(`/artists`)
       .send({})
@@ -105,15 +105,15 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      xit('gets artist record by name', (done) => { //not passing!
+      xit('gets artist record by name', (done) => { 
         const artist = artists[0];
         request(app)
           .get(`/artists/find`)
           .query({ name: 'Tame Impala' })
           .then((res) => {
             expect(res.status).to.equal(200);
-            expect(res.body.name).to.equal(artist.name);
-            expect(res.body.genre).to.equal(artist.genre);
+            expect(res.body[0].name).to.equal(artist.name);
+            expect(res.body[0].genre).to.equal(artist.genre);
             done();
           });
       });
@@ -137,8 +137,8 @@ describe('/artists', () => {
         .query({ genre: 'Rock' })
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.name).to.equal(artist.name);
-          expect(res.body.genre).to.equal(artist.genre);
+          expect(res.body[0].name).to.equal(artist.name);
+          expect(res.body[0].genre).to.equal(artist.genre);
           done();
       })
     })
