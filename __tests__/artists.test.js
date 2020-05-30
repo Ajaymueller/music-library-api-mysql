@@ -22,19 +22,23 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    it('creates a new artist in the database', async () => {
-      const response = await request(app).post('/artists').send({
+    it('creates a new artist in the database', (done) => {
+      request(app)
+      .post(`/artists`)
+      .send({
         name: 'Tame Impala',
         genre: 'Rock',
-      });
-
-      await expect(response.status).to.equal(201);
-      await expect(response.body.name).to.equal('Tame Impala');
-
-      const insertedArtistRecords = await Artist.findByPk(response.body.id, { raw: true });
-      await expect(insertedArtistRecords.name).to.equal('Tame Impala');
-      await expect(insertedArtistRecords.genre).to.equal('Rock');
-    });
+      })
+      .then((res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.name).to.equal('Tame Impala');
+        Artist.findByPk(res.body.id, { raw: true }).then(artist => {
+          expect(artist.name).to.equal('Tame Impala');
+          expect(artist.genre).to.equal('Rock');
+          done();
+        })
+      })
+    })
     it('cannot create the artist if there is no name or genre', (done) => {
       request(app)
       .post(`/artists`)
