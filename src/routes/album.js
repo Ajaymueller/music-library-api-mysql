@@ -1,27 +1,26 @@
 const express = require('express');
-const ablbumControllers = require('../controllers/album');
+const albumControllers = require('../controllers/album');
 
 const router = express.Router();
 
-router.post('/artists/:artistId/albums', ablbumControllers.createAlbum);
 
-router.get('/albums', ablbumControllers.listAlbums);
+router.get('/albums/year', albumControllers.findByAlbumYear);
 
-router.get('/artists/:artistId/albums', ablbumControllers.findByArtistId);
+router.get('/albums/find/name', albumControllers.findByAlbumName);
 
-router.get(`/albums/:albumId`, ablbumControllers.findOneById);
+router.route('/artists/:artistId/albums')
+.get(albumControllers.findByArtistId)
+.post(albumControllers.createAlbum)
+.delete(albumControllers.deleteByArtistId)
 
-router.get('/albums/find/name', ablbumControllers.findByAlbumName);
+router.route(`/artists/albums/:albumId`)
+.delete(albumControllers.deleteByIdAndName)
 
-router.get('/albums/year', ablbumControllers.findByAlbumYear);
+router.route(`/albums/:albumId`)
+.get(albumControllers.findOneById)
+.patch(albumControllers.updateByAlbumId)
+.delete(albumControllers.deleteByAlbumId)
 
-router.patch('/albums/:albumId', ablbumControllers.updateByAlbumId);
-
-router.delete(`/albums/:albumId`, ablbumControllers.deleteByAlbumId);
-
-router.delete(`/artists/albums/:albumId`, ablbumControllers.deleteByIdAndName);
-
-router.delete('/artists/:artistId/albums', ablbumControllers.deleteByArtistId);
-
+router.get('/albums', albumControllers.listAlbums);
 
 module.exports = router;
