@@ -11,14 +11,18 @@ exports.createAlbum = async (req, res) => {
         res.status(201).json(linkedAlbum); 
   })
 })
+.catch((error) => {
+  const errorMessages = error.errors.map((e) => e.message);
+  return res.status(400).json({ errors: errorMessages});
+})
 };
 
-/*exports.listAlbums = async (req, res) => {
+exports.listAlbums = async (req, res) => {
   Album.findAll({ where: {}}).then(albums => 
     res.status(200).json(albums));
-};*/
+};
 
-exports.listAlbums = (req, res) => getAllItems(res, req);
+//exports.listAlbums = (req, res) => getAllItems(res, req);
 
 exports.findByArtistId = async (req, res) => {
   const { artistId } = req.params;

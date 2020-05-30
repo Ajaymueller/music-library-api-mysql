@@ -2,14 +2,18 @@ const { Artist } = require('../sequelize');
 const { getAllItems } = require('./helpers');
 
 exports.createArtist = (req, res) => {
-  Artist.create(req.body).then(user => res.status(201).json(user));
+  Artist.create(req.body).then(user => res.status(201).json(user))
+  .catch((error) => {
+    const errorMessages = error.errors.map((e) => e.message);
+    return res.status(400).json({ errors: errorMessages});
+  })
 };
 
-/*exports.listArtists = (req, res) => {
+exports.listArtists = (req, res) => {
   Artist.findAll({ where: {}}).then(artists => res.status(200).json(artists));
-};*/
+};
 
-exports.listArtists = (req, res) => getAllItems(res, artist);
+//exports.listArtists = (req, res) => getAllItems(res, artist);
 
 exports.findByArtistId = (req, res) => {
   const { id } = req.params;

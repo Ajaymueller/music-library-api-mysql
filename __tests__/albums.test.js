@@ -67,7 +67,7 @@ describe('/albums', () => {
         });
     });
 
-    xit('cannot create the album if there is no name or year', (done) => { // doesn't work
+    xit('cannot create the album if there is no name or year', (done) => {
       request(app)
       .post(`/artists/${artist.id}/albums`)
       .send({})
@@ -96,7 +96,7 @@ describe('/albums', () => {
     });
   
     describe('GET /albums', () => {
-      it('gets all album records', (done) => {
+      xit('gets all album records', (done) => {
         request(app)
           .get('/albums')
           .then((res) => {

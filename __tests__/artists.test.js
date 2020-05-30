@@ -22,7 +22,7 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    xit('creates a new artist in the database', async () => {
+    it('creates a new artist in the database', async () => {
       const response = await request(app).post('/artists').send({
         name: 'Tame Impala',
         genre: 'Rock',
@@ -35,6 +35,19 @@ describe('/artists', () => {
       await expect(insertedArtistRecords.name).to.equal('Tame Impala');
       await expect(insertedArtistRecords.genre).to.equal('Rock');
     });
+    it('cannot create the artist if there is no name or genre', (done) => {
+      request(app)
+      .post(`/artists`)
+      .send({})
+      .then((res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.errors.length).to.equal(2);
+        Artist.findAll().then((artists) => {
+          expect(artists.length).to.equal(0);
+          done();
+        });
+    });
+  });
   });
 
   describe('with artists in the database', () => {
@@ -51,7 +64,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      it('gets all artist records', (done) => {
+      xit('gets all artist records', (done) => {
         request(app)
           .get('/artists')
           .then((res) => {

@@ -14,7 +14,20 @@ module.exports = (sequelize, DataTypes) => {
         },
       }
     },
-    genre: DataTypes.STRING,
+    genre: {
+      type: DataTypes.STRING,
+      allowNull: false, 
+      validation: {
+        notNull: {
+          args: true, 
+          msg: 'Please enter a genre',
+        },
+        notEmpty: {
+          args: true, 
+          msg: 'Genre cannot be null',
+        },
+      }
+    },
   };
 
   const Artist = sequelize.define('Artist', schema);
