@@ -69,16 +69,12 @@ exports.updateByAlbumId = async (req, res) => {
   };
 
 exports.deleteByAlbumId = async (req, res) => {
-    const { artistId } = req.params;
-    const { albumId } = req.params;
-    await Artist.findByPk(artistId).then(artist => {
-      ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
-      : Album.findByPk(albumId).then(album => {
-        ! album ? res.status(404).json({ error: 'The album could not be found.' })
-        : Album.destroy({ where: { id: albumId} } )
-        .then(destroyedAlbum => res.status(204).json(destroyedAlbum))
-      }); 
-  });
+  const { albumId } = req.params;
+  await Album.findByPk(albumId).then(albums => {
+    ! albums ? res.status(404).json({ error: 'The album could not be found.' })
+    : Album.destroy({ where: { id: albumId} } )
+    .then(destroyedAlbum => res.status(204).json(destroyedAlbum))
+  })
 };
 
 

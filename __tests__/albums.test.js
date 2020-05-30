@@ -138,31 +138,6 @@ describe('/albums', () => {
         });
     });
   });
-  describe('GET artists/:artistId/albums/:albumId', () => {
-   xit('gets album record by album id', (done) => {
-      const album = albums[0];
-      request(app)
-        .get(`/artists/${artist.id}/albums/${album.id}`)
-        .then((res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body.name).to.equal(album.name);
-          expect(res.body.year).to.equal(album.year);
-          expect(res.body.id).to.equal(album.id);
-          expect(res.body.artistId).to.equal(artist.id);
-          done();
-        });
-    });
-
-    xit('returns a 404 if the artist does not exist', (done) => {
-      request(app)
-        .get('/artists/12345/albums/12345')
-        .then((res) => {
-          expect(res.status).to.equal(404);
-          expect(res.body.error).to.equal('The artist and album could not be found.');
-          done();
-        });
-    });
-  });
   describe('GET /albums/:albumId', () => {
     xit('gets album record by album id', (done) => {
        const album = albums[0];
@@ -266,7 +241,7 @@ describe('DELETE artists/:artistId/albums/:albumId', () => {
   xit('deletes album record by album id', (done) => {
     const album = albums[0];
     request(app)
-      .delete(`/artists/${artist.id}/albums/${album.id}`)
+      .delete(`/albums/${album.id}`)
       .then((res) => {
         expect(res.status).to.equal(204);
         Album.findByPk(album.id).then((updatedAlbum) => {
@@ -277,10 +252,10 @@ describe('DELETE artists/:artistId/albums/:albumId', () => {
   });
   xit('returns a 404 if the artist does not exist', (done) => {
     request(app)
-      .delete('/artists/12345/albums/12345')
+      .delete('/albums/12345')
       .then((res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.error).to.equal('The artist and album could not be found.');
+        expect(res.body.error).to.equal('The album could not be found.');
         done();
       });
   });
