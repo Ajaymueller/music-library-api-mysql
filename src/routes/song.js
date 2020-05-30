@@ -3,20 +3,19 @@ const songControllers = require('../controllers/song');
 
 const router = express.Router();
 
-router.post(`/albums/:albumId/song`, songControllers.createSong);
-
 router.get('/song', songControllers.listSongs);
 
 router.get('/artists/:artistId/songs', songControllers.findSongByArtistId);
 
-router.get(`/albums/:albumId/song`, songControllers.findAllSongsByAlbumId);
-
-router.get('/song/:songId', songControllers.findSongBySongId);
-
 router.get('/song/find/name', songControllers.findBySongName);
 
-router.patch('/song/:songId', songControllers.updateSongBySongId);
+router.route('/song/:songId')
+.get(songControllers.findSongBySongId)
+.patch(songControllers.updateSongBySongId)
+.delete(songControllers.deleteSongBySongId)
 
-router.delete('/song/:songId', songControllers.deleteSongBySongId);
+router.route(`/albums/:albumId/song`)
+.post(songControllers.createSong)
+.get(songControllers.findAllSongsByAlbumId)
 
 module.exports = router;

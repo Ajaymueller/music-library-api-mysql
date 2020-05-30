@@ -23,8 +23,9 @@ exports.createSong = async (req, res) => {
 };
 
 exports.listSongs = async (req, res) => {
-  Song.findAll({where: {} }).then(songs => res.status(200).json(songs));
-  };
+  const songs = await Song.findAll({where: {} })
+  res.status(200).json(songs);
+};
 
 exports.findAllSongsByAlbumId = async (req, res) => {
   const { albumId } = req.params; 
@@ -36,10 +37,9 @@ exports.findAllSongsByAlbumId = async (req, res) => {
 
 exports.findSongBySongId = async (req, res) => {
   const { songId } = req.params; 
-  await Song.findByPk(songId).then(song => {
+  const song = await Song.findByPk(songId)
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
     : res.status(200).json(song);
-  });
 };
 
 exports.findBySongName = async (req, res) => {
@@ -62,20 +62,18 @@ exports.findSongByArtistId = async (req, res) => {
 
 exports.updateSongBySongId = async (req, res) => {
   const { songId } = req.params;
-  await Song.findByPk(songId).then(song => {
-    ! song ? res.status(404).json({ error: 'The song could not be found.'})
-      : song.update(req.body, { where: {id: songId}}).then(updatedSong => {
-        res.status(200).json(updatedSong);
-  });
+const song = await Song.findByPk(songId)
+! song ? res.status(404).json({ error: 'The song could not be found.'})
+: song.update(req.body, { where: {id: songId}}).then(updatedSong => {
+  res.status(200).json(updatedSong);
 });
-};
+}
 
 exports.deleteSongBySongId = async (req, res) => {
   const { songId } = req.params; 
-  await Song.findByPk(songId).then(song => {
-    ! song ? res.status(404).json({ error: 'The song could not be found.'})
-    : song.destroy({where: { id: songId }}).then(destroyedSong => {
-      res.status(204).json(destroyedSong);
-    })
-})
-}
+const song = await Song.findByPk(songId);
+! song ? res.status(404).json({ error: 'The song could not be found.'})
+: Song.destroy({where: { id: songId }}).then(destroyedSong => {
+  res.status(204).json(destroyedSong);
+});
+};
