@@ -105,7 +105,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      xit('gets artist record by name', (done) => {
+      xit('gets artist record by name', (done) => { //not passing!
         const artist = artists[0];
         request(app)
           .get(`/artists/find`)
