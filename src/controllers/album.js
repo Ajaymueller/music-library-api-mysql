@@ -35,13 +35,9 @@ exports.findByArtistId = async (req, res) => {
 
 exports.findOneById = async (req, res) => {
   const { albumId } = req.params;
-  const { artistId } = req.params;
-  await Artist.findByPk(artistId).then(artist => {
-    ! artist ? res.status(404).json({ error: 'The artist and album could not be found.' })
-    : Album.findByPk(albumId).then(album => {
-      ! album ? res.status(404).json({ error: 'The artist and album could not be found.' })
-      : res.status(200).json(album)
-    });
+  await Album.findByPk(albumId).then(album => {
+    ! album ? res.status(404).json({ error: 'The album could not be found.' })
+    : res.status(200).json(album)
   });
 };
 

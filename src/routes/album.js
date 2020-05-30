@@ -9,7 +9,9 @@ router.get('/albums', ablbumControllers.listAlbums);
 
 router.get('/artists/:artistId/albums', ablbumControllers.findByArtistId);
 
-router.get(`/artists/:artistId/albums/:albumId`, ablbumControllers.findOneById);
+//router.get(`/artists/:artistId/albums/:albumId`, ablbumControllers.findOneById);
+
+router.get(`/albums/:albumId`, ablbumControllers.findOneById);
 
 router.get('/albums/find/name', ablbumControllers.findByAlbumName);
 

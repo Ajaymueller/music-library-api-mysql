@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
             msg: 'The album year cannot be empty'
           },
         },
+          isInt: {
+          args: false, 
+          msg: 'The album year must be a number'
+        },
       },
   };
 
