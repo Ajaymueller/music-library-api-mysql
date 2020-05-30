@@ -3,10 +3,30 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validation: {
+          notNull: {
+            args: true,
+            msg: 'Please enter an album name',
+          },
+          notEmpty: {
+           args: true,
+           msg: 'The album name cannot be empty',
+          },
+        },
       },
       year: {
         type: DataTypes.INTEGER, 
         allowNull: false,
+        validation: {
+          notNull: {
+            args: true,
+            msg: 'Please enter an album year',
+          },
+          notEmpty: {
+            args: true,
+            msg: 'The album year cannot be empty'
+          },
+        },
       },
   };
 

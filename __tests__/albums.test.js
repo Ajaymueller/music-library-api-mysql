@@ -66,7 +66,21 @@ describe('/albums', () => {
           });
         });
     });
+
+    xit('cannot create the album if there is no name or year', (done) => { // doesn't work
+      request(app)
+      .post(`/artists/${artist.id}/albums`)
+      .send({})
+      .then((res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.errors.length).to.equal(2);
+        Album.findAll().then((albums) => {
+          expect(albums.length).to.equal(0);
+          done();
+        });
+    });
   });
+});
 
 
   describe('with albums in the database', () => {
