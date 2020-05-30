@@ -38,7 +38,7 @@ describe('/songs', () => {
   });
 
   describe('POST /albums/:albumId/song', () => {
-    xit('creates a new song under an album', (done) => {
+    it('creates a new song under an album', (done) => {
       request(app)
         .post(`/albums/${album.id}/song`)
         .send({
@@ -55,7 +55,7 @@ describe('/songs', () => {
           done();
         });
     });
-    xit('returns a 404 and does not create a song if the album does not exist', (done) => {
+    it('returns a 404 and does not create a song if the album does not exist', (done) => {
       request(app)
         .post('/albums/1234/song')
         .send({
@@ -72,6 +72,19 @@ describe('/songs', () => {
           });
         });
     });
+    it('cannot create the artist if there is no name', (done) => {
+      request(app)
+      .post(`/artists`)
+      .send({})
+      .then((res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.errors.length).to.equal(2);
+        Song.findAll().then((songs) => {
+          expect(songs.length).to.equal(0);
+          done();
+        });
+    });
+  });
   });
 
   describe('with songs in the database', () => {

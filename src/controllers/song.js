@@ -15,6 +15,10 @@ exports.createSong = async (req, res) => {
         res.status(201).json(finalSong);
       });
   });
+})
+.catch((error) => {
+  const errorMessages = error.errors.map((e) => e.message);
+  return res.status(400).json({ errors: errorMessages});
 });
 };
 
