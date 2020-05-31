@@ -163,6 +163,30 @@ describe('/songs', () => {
         })
       })
     })
+    describe('GET /song', () => {
+      xit('gets song where name contains a specific word', (done) => {
+        const song = songs[0];
+        request(app)
+        .get('/song/find/word')
+        .query({ name: 'Song'})
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body[0].name).to.equal(song.name);
+          expect(res.body[0].year).to.equal(song.year);
+          done();
+        })
+      })
+      xit('returns a 404 if the song does not exist', (done) => {
+        request(app)
+          .get(`/song/find/word`)
+          .query({ name: 'randomName' })
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The song could not be found.');
+            done();
+          });
+      });
+    })
     describe('GET song', () => {
       xit('gets songs by song name', (done) => {
         const song = songs[0];
@@ -176,7 +200,7 @@ describe('/songs', () => {
           done();
         })
       })
-      xit('returns a 404 if the artist does not exist', (done) => {
+      xit('returns a 404 if the song does not exist', (done) => {
         request(app)
           .get(`/song/find/name`)
           .query({ name: 'randomName' })

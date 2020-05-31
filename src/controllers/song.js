@@ -1,6 +1,6 @@
 const { Album } = require('../sequelize');
-const { Artist } = require('../sequelize');
 const { Song } = require('../sequelize');
+const { Op } = require("sequelize");
 
 exports.createSong = async (req, res) => {
   const  { albumId } = req.params;
@@ -39,7 +39,14 @@ exports.findSongBySongId = async (req, res) => {
   const { songId } = req.params; 
   const song = await Song.findByPk(songId)
     ! song ? res.status(404).json({ error: 'The song could not be found.'})
-    : res.status(200).json(song);
+    : res.status(200).json(song)
+};
+
+exports.findSongContainingWord = async (req, res) => {
+  const { name } = req.query;
+  const songs = await Song.findAll({ where: { name: { [Op.like]: `%${name}%` }}});
+   songs < 1 ? res.status(404).json({ error: 'The song could not be found.'})
+  : res.status(200).json(songs);
 };
 
 exports.findBySongName = async (req, res) => {

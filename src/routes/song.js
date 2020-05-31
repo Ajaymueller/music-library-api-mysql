@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get('/song', songControllers.listSongs);
 
+router.get(`/song/find/word`, songControllers.findSongContainingWord);
+
 router.get('/artists/:artistId/songs', songControllers.findSongByArtistId);
 
 router.get('/song/find/name', songControllers.findBySongName);
