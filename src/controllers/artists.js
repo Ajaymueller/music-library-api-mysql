@@ -17,7 +17,7 @@ exports.listArtists = async (req, res) => {
   res.status(200).json(artists);
 };
 
-//exports.listArtists = (req, res) => getAllItems(res, artist);
+/*exports.listArtists = (req, res) => getAllItems (req, res);*/
 
 exports.findByArtistId = async (req, res) => {
   const { id } = req.params;

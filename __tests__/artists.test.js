@@ -81,8 +81,8 @@ describe('/artists', () => {
             });
             done();
           });
-      });
     });
+  });
 
     describe('GET /artists/:artistId', () => {
       xit('gets artist record by id', (done) => {
@@ -159,7 +159,7 @@ describe('/artists', () => {
   })
 
   describe('GET /artists', () => { 
-    it('gets an artist name that begins with specific letter', (done) => {
+    xit('gets an artist name that begins with specific letter', (done) => {
       const artist = artists[0];
       request(app)
       .get('/artists/find/letter')
@@ -172,7 +172,7 @@ describe('/artists', () => {
         done();
       });
     });
-    it('returns a 404 if the artist cannot be found', (done) => {
+    xit('returns a 404 if the artist cannot be found', (done) => {
       request(app)
         .get(`/artists/find/letter`)
         .query({ name: 'Z' })

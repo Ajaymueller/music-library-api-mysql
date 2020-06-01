@@ -1,6 +1,7 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
 const { getAllItems } = require('./helpers');
+const { Op } = require("sequelize");
 
 exports.createAlbum = async (req, res) => {
   const { artistId } = req.params;
@@ -56,6 +57,15 @@ exports.findOneById = async (req, res) => {
       albumData < 1 ?
       res.status(404).json({ error: 'The album could not be found.'})
       : res.status(200).json(albumData)
+  };
+
+  exports.findAlbumFromBeforeYear = async (req, res) => {
+    const { year } = req.query;
+    const albums = await Album.findAll({});
+    const albumData = await albums.filter(album => album.year < year);
+    albumData < 1 ?
+    res.status(404).json({ error: 'The album could not be found.'})
+    : res.status(200).json(albumData);
   };
 
 exports.updateByAlbumId = async (req, res) => {

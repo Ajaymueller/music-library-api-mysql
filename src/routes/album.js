@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get('/albums/year', albumControllers.findByAlbumYear);
 
+router.get('/albums/find/year', albumControllers.findAlbumFromBeforeYear);
+
 router.get('/albums/find/name', albumControllers.findByAlbumName);
 
 router.route('/artists/:artistId/albums')

@@ -1,19 +1,19 @@
-const { Artist } = require('../models/artist');
-const { Album } = require('../models/album');
-const { Song } = require('../models/song');
+const { Artist } = require('../sequelize');
+const { Album } = require('../sequelize');
+const { Song } = require('../sequelize');
 
 const getModel = (model) => {
   const models = {
-    artist: Artist,
-    album: Album,
-    song: Song,
+    '/artists': Artist,
+    '/albums': Album,
+    '/songs': Song,
   };
 
   return models[model];
 };
 
-exports.getAllItems = (res, model) => {
-  const Model = getModel(model);
+exports.getAllItems = (req, res) => {
+  const Model = getModel(req.url);
 
   return Model.findAll().then((allItems) => {
     res.status(200).json(allItems);
