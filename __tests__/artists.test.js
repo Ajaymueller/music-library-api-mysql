@@ -158,6 +158,32 @@ describe('/artists', () => {
       });
   })
 
+  describe('GET /artists', () => { 
+    it('gets an artist name that begins with specific letter', (done) => {
+      const artist = artists[0];
+      request(app)
+      .get('/artists/find/letter')
+      .query({name: 'T'})
+      .then((res) => {
+        expect(res.status).to.equal(200);
+        console.log('test', res.body.name);
+        expect(res.body[0].name).to.equal(artist.name);
+        expect(res.body[0].genre).to.equal(artist.genre);
+        done();
+      });
+    });
+    it('returns a 404 if the artist cannot be found', (done) => {
+      request(app)
+        .get(`/artists/find/letter`)
+        .query({ name: 'Z' })
+        .then((res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.equal('The artist could not be found.');
+          done();
+        });
+    });
+  })
+
     describe('PATCH /artists/:artistId', () => {
       xit('updates artist genre by id', (done) => {
         const artist = artists[0];

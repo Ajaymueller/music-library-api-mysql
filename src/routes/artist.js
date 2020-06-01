@@ -7,6 +7,8 @@ router.get('/find', artistControllers.findByArtistName);
 
 router.get('/find/genre', artistControllers.findByArtistGenre);
 
+router.get('/find/letter', artistControllers.findByFirstLetter);
+
 router.route('/')
 .post(artistControllers.createArtist)
 .get(artistControllers.listArtists)

@@ -1,5 +1,6 @@
 const { Artist } = require('../sequelize');
 const { getAllItems } = require('./helpers');
+const { Op } = require("sequelize");
 
 exports.createArtist = async (req, res) => {
   try {
@@ -41,6 +42,13 @@ exports.findByArtistGenre = async (req, res) => {
   res.status(404).json({ error: 'The artist could not be found.' })
   : res.status(200).json(artists)
 }
+
+exports.findByFirstLetter = async (req, res) => {
+  const { name } = req.query;
+  const artists = await Artist.findAll({ where: { name: {[Op.startsWith]: `${name}%`}} });
+  artists.length < 1 ? res.status(404).json({ error: 'The artist could not be found.' })
+  : res.status(200).json(artists)
+};
 
 exports.updateArtistGenre = async (req, res) => {
   const { id } = req.params;
