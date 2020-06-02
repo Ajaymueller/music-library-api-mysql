@@ -22,7 +22,7 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    xit('creates a new artist in the database', (done) => {
+    it('creates a new artist in the database', (done) => {
       request(app)
       .post(`/artists`)
       .send({
@@ -68,7 +68,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      xit('gets all artist records', (done) => {
+      it('gets all artist records', (done) => {
         request(app)
           .get('/artists')
           .then((res) => {
@@ -85,7 +85,7 @@ describe('/artists', () => {
   });
 
     describe('GET /artists/:artistId', () => {
-      xit('gets artist record by id', (done) => {
+      it('gets artist record by id', (done) => {
         const artist = artists[0];
         request(app)
           .get(`/artists/${artist.id}`)
@@ -97,7 +97,7 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get('/artists/12345')
           .then((res) => {
@@ -109,7 +109,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      xit('gets artist record by name', (done) => { 
+      it('gets artist record by name', (done) => { 
         const artist = artists[0];
         request(app)
           .get(`/artists/find`)
@@ -122,7 +122,7 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get(`/artists/find`)
           .query({ name: 'randomName' })
@@ -134,7 +134,7 @@ describe('/artists', () => {
       });
     });
     describe('GET /artists', () => {
-      xit('gets artist records by genre', (done) => {
+      it('gets artist records by genre', (done) => {
         const artist = artists[0];
         request(app)
         .get('/artists/find/genre')
@@ -146,7 +146,7 @@ describe('/artists', () => {
           done();
       })
     })
-      xit('returns a 404 if the artist with that genre does not exist', (done) => {
+      it('returns a 404 if the artist with that genre does not exist', (done) => {
         request(app)
           .get(`/artists/find/genre`)
           .query({ genre: 'randomGenre' })

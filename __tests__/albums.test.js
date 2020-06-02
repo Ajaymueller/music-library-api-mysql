@@ -96,7 +96,7 @@ describe('/albums', () => {
     });
   
     describe('GET /albums', () => {
-      it('gets all album records', (done) => {
+      xit('gets all album records', (done) => {
         request(app)
           .get('/albums')
           .then((res) => {

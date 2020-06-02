@@ -22,10 +22,47 @@ const getModel = (model) => {
   return models[model];
 };
 
-exports.getAllItems = (res, model) => {
+exports.getAllItems = async (res, model) => {
+  const Model = getModel(model);
+  const allItems = await Model.findAll();
+  res.status(200).json(allItems);
+};
+
+exports.createItem = async (res, model, item) => {
   const Model = getModel(model);
 
-  return Model.findAll().then((allItems) => {
-    res.status(200).json(allItems);
-  });
+  try {
+    const newItem = await Model.create(item)
+    res.status(201).json(newItem);
+  } catch (error) {
+    const errorMessages = await errorMessages.errors.map((e) => e.message);
+    res.status(400).json({ errors: errorMessages });
+  }
+}
+
+exports.findItemById = async (res, model, id) => {
+  const Model = getModel(model);
+
+  const foundItem = await Model.findByPk(id)
+  ! foundItem ?
+  res.status(404).json({ error: `The ${model} could not be found.` })
+  : res.status(200).json(foundItem);
+};
+
+exports.findItemByName= async (res, model, name) => {
+  const Model = getModel(model);
+
+  const items = await Model.findAll({ where: { name }})
+  items.length < 1 ?
+  res.status(404).json({ error: `The ${model} could not be found.` })
+  : res.status(200).json(items)
+};
+
+exports.findItemByGenre = async (res, model, genre) => {
+  const Model = getModel(model);
+
+  const items = await Model.findAll({ where: { genre }})
+  items.length < 1 ? 
+  res.status(404).json({ error: `The ${model} could not be found.` })
+  : res.status(200).json(items)
 };
