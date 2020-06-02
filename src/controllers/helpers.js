@@ -74,6 +74,17 @@ exports.deleteItemById = async (res, model, id) => {
   : res.status(204).json(destroyedItem)
 }
 
+exports.deleteAlbumByIdAndName = async (res, model, name, id) => {
+  const Model = getModel(model);
+
+  Model.findByPk(id).then(item => {
+    ! item ? res.status(404).json({ error: `The ${model} could not be found.`})
+    : name === item.name ? Model.destroy({ where: { name }}).then(destroyedItem => res.status(204).json(destroyedItem))
+    : res.status(404).json({ error: `The ${model} could not be found.`})
+  });
+
+}
+
 exports.findItemByYear = async (res, model, year) => {
   const Model = getModel(model);
 

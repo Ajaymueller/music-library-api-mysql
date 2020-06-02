@@ -67,7 +67,7 @@ describe('/albums', () => {
         });
     });
 
-    xit('cannot create the album if there is no name or year', (done) => {
+    it('cannot create the album if there is no name or year', (done) => {
       request(app)
       .post(`/artists/${artist.id}/albums`)
       .send({})
@@ -96,7 +96,7 @@ describe('/albums', () => {
     });
   
     describe('GET /albums', () => {
-      xit('gets all album records', (done) => {
+      it('gets all album records', (done) => {
         request(app)
           .get('/albums')
           .then((res) => {
@@ -105,7 +105,6 @@ describe('/albums', () => {
             res.body.forEach((album) => {
               const expected = albums.find((a) => a.id === album.id);
               expect(album.name).to.equal(expected.name);
-              console.log('test', res.body);
               expect(album.year).to.equal(expected.year);
             });
             done();
@@ -214,7 +213,7 @@ describe('/albums', () => {
      });
    });
    describe('GET /albums', () => {
-     xit('gets album records from before a certain year', (done) => {
+     it('gets album records from before a certain year', (done) => {
        const album = albums[0];
        request(app)
        .get('/albums/find/year')
@@ -227,7 +226,7 @@ describe('/albums', () => {
          done();
        });
      });
-     xit('returns a 404 if the artist does not exist', (done) => {
+     it('returns a 404 if the artist does not exist', (done) => {
       request(app)
         .get('/albums/find/year')
         .query({ year: '2008' })
@@ -287,7 +286,7 @@ describe('DELETE albums/:albumId', () => {
   });
 });
 describe('DELETE artists/albums/:albumId', () => {
-  xit('deletes album record by album id and name', (done) => {
+  it('deletes album record by album id and name', (done) => {
     const album = albums[0];
     request(app)
       .delete(`/artists/albums/${album.id}`)
@@ -300,7 +299,7 @@ describe('DELETE artists/albums/:albumId', () => {
         });
       });
   });
-  xit('returns a 404 if the artist does not exist', (done) => {
+  it('returns a 404 if the artist does not exist', (done) => {
     request(app)
       .delete('/artists/albums/12345')
       .query({ name: 'randomName'})
@@ -312,7 +311,7 @@ describe('DELETE artists/albums/:albumId', () => {
   });
 });
 describe('DELETE artists/:artistId/albums', () => {
- xit('deletes all albums by artist Id', (done) => {
+ it('deletes all albums by artist Id', (done) => {
    request(app)
       .delete(`/artists/${artist.id}/albums`)
       .then((res) => {
@@ -323,7 +322,7 @@ describe('DELETE artists/:artistId/albums', () => {
         });
       });
     })
-  xit('returns a 404 if the albums do not exist', (done) => {
+  it('returns a 404 if the albums do not exist', (done) => {
    request(app)
       .delete('/artists/12345/albums')
       .then((res) => {
