@@ -66,3 +66,12 @@ exports.findItemByGenre = async (res, model, genre) => {
   res.status(404).json({ error: `The ${model} could not be found.` })
   : res.status(200).json(items)
 };
+
+exports.deleteItemById = async (res, model, id) => {
+  const Model = getModel(model);
+
+  const destroyedItem = await Model.destroy({ where: { id }});
+  ! destroyedItem ? 
+  res.status(404).json({ error: `The ${model} could not be found.`  })
+  : res.status(204).json(destroyedItem)
+}

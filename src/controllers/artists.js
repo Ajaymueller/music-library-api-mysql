@@ -1,5 +1,5 @@
 const { Artist } = require('../sequelize');
-const { getAllItems, createItem, findItemById, findItemByName, findItemByGenre} = require('./helpers');
+const { getAllItems, createItem, findItemById, findItemByName, findItemByGenre, deleteItemById} = require('./helpers');
 const { Op } = require("sequelize");
 
 exports.createArtist = async (req, res) => createItem (res, 'artist', req.body);
@@ -35,10 +35,4 @@ exports.updateArtistName = async (req, res) => {
   });
 };
 
-exports.deleteArtistByArtistId = async (req, res) => {
-  const { id } = req.params;
-  const artist = await Artist.destroy({ where: { id }});
-  ! artist ?
-  res.status(404).json({ error: 'The artist could not be found.' })
-  : res.status(204).json(artist)
-};
+exports.deleteArtistByArtistId = async (req, res) => deleteItemById (res, 'artist', req.params.id );
