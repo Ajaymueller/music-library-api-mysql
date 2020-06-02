@@ -12,12 +12,12 @@ exports.createArtist = async (req, res) => {
   };
 };
 
-exports.listArtists = async (req, res) => {
+/*exports.listArtists = async (req, res) => {
   const artists = await Artist.findAll({ where: {} });
   res.status(200).json(artists);
-};
+};*/
 
-/*exports.listArtists = (req, res) => getAllItems (req, res);*/
+exports.listArtists = (req, res) => getAllItems (res, 'artist');
 
 exports.findByArtistId = async (req, res) => {
   const { id } = req.params;

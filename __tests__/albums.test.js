@@ -96,7 +96,7 @@ describe('/albums', () => {
     });
   
     describe('GET /albums', () => {
-      xit('gets all album records', (done) => {
+      it('gets all album records', (done) => {
         request(app)
           .get('/albums')
           .then((res) => {
@@ -213,7 +213,7 @@ describe('/albums', () => {
      });
    });
    describe('GET /albums', () => {
-     it('gets album records from before a certain year', (done) => {
+     xit('gets album records from before a certain year', (done) => {
        const album = albums[0];
        request(app)
        .get('/albums/find/year')
@@ -226,7 +226,7 @@ describe('/albums', () => {
          done();
        });
      });
-     it('returns a 404 if the artist does not exist', (done) => {
+     xit('returns a 404 if the artist does not exist', (done) => {
       request(app)
         .get('/albums/find/year')
         .query({ year: '2008' })
