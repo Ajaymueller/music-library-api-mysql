@@ -184,7 +184,7 @@ describe('/artists', () => {
     });
   })
     describe('PATCH /artists/:artistId', () => {
-      it('updates artist name by id', (done) => {
+      xit('updates artist name by id', (done) => {
         const artist = artists[0];
         request(app)
           .patch(`/artists/${artist.id}`)
@@ -198,7 +198,7 @@ describe('/artists', () => {
           });
       });
 
-     it('returns a 404 if the artist does not exist', (done) => {
+     xit('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .patch('/artists/12345')
           .send({ name: 'Eminem' })

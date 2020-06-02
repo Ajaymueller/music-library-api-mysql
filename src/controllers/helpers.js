@@ -2,16 +2,6 @@ const { Artist } = require('../sequelize');
 const { Album } = require('../sequelize');
 const { Song } = require('../sequelize');
 
-/*const getModel = (model) => {
-  const models = {
-    '/artists': Artist,
-    '/albums': Album,
-    '/songs': Song,
-  };
-
-  return models[model];
-};*/
-
 const getModel = (model) => {
   const models = {
     artist: Artist,
@@ -24,7 +14,7 @@ const getModel = (model) => {
 
 exports.getAllItems = async (res, model) => {
   const Model = getModel(model);
-  const allItems = await Model.findAll();
+  const allItems = await Model.findAll({});
   res.status(200).json(allItems);
 };
 
@@ -35,8 +25,8 @@ exports.createItem = async (res, model, item) => {
     const newItem = await Model.create(item)
     res.status(201).json(newItem);
   } catch (error) {
-    const errorMessages = await errorMessages.errors.map((e) => e.message);
-    res.status(400).json({ errors: errorMessages });
+    const errorMessages = await error.errors.map((e) => e.message);
+    res.status(400).json({ error: errorMessages });
   }
 }
 
@@ -82,4 +72,13 @@ exports.deleteItemById = async (res, model, id) => {
   ! destroyedItem ? 
   res.status(404).json({ error: `The ${model} could not be found.`  })
   : res.status(204).json(destroyedItem)
+}
+
+exports.findItemByYear = async (res, model, year) => {
+  const Model = getModel(model);
+
+  const items = await Model.findAll({ where: { year }})
+  items.length < 1 ?
+  res.status(404).json({ error: `The ${model} could not be found.` })
+  : res.status(200).json(items)
 }
