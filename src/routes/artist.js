@@ -15,8 +15,7 @@ router.route('/')
 
 router.route('/:id')
 .get(artistControllers.findByArtistId)
-.patch(artistControllers.updateArtistName)
-.patch(artistControllers.updateArtistGenre)
+.patch(artistControllers.updateArtistById)
 .delete(artistControllers.deleteArtistByArtistId)
 
 module.exports = router;
