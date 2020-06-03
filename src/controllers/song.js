@@ -1,6 +1,7 @@
 const { Album } = require('../sequelize');
 const { Song } = require('../sequelize');
 const { Op } = require("sequelize");
+const { getAllItems, findItemById, findItemByName, updateModel, deleteItemById } = require('./helpers');
 
 exports.createSong = async (req, res) => {
   const  { albumId } = req.params;
@@ -22,11 +23,6 @@ exports.createSong = async (req, res) => {
 });
 };
 
-exports.listSongs = async (req, res) => {
-  const songs = await Song.findAll({where: {} })
-  res.status(200).json(songs);
-};
-
 exports.findAllSongsByAlbumId = async (req, res) => {
   const { albumId } = req.params; 
   const songs = await Song.findAll({where: { albumId: albumId }});
@@ -35,28 +31,12 @@ exports.findAllSongsByAlbumId = async (req, res) => {
   : res.status(200).json(songs);
 };
 
-exports.findSongBySongId = async (req, res) => {
-  const { songId } = req.params; 
-  const song = await Song.findByPk(songId)
-    ! song ? res.status(404).json({ error: 'The song could not be found.'})
-    : res.status(200).json(song)
-};
 
 exports.findSongContainingWord = async (req, res) => {
   const { name } = req.query;
   const songs = await Song.findAll({ where: { name: { [Op.like]: `%${name}%` }}});
    songs < 1 ? res.status(404).json({ error: 'The song could not be found.'})
   : res.status(200).json(songs);
-};
-
-exports.findBySongName = async (req, res) => {
-  const { name } = req.query;
-  Song.findAll({where: { name: name }}).then(songs => {
-    const songData = songs.filter(song => song.name === name)
-     songData < 1 ? 
-    res.status(404).json({ error: 'The song could not be found.'})
-    : res.status(200).json(songData);
-  });
 };
 
 exports.findSongByArtistId = async (req, res) => {
@@ -67,20 +47,12 @@ exports.findSongByArtistId = async (req, res) => {
     : res.status(200).json(songs);
 };
 
-exports.updateSongBySongId = async (req, res) => {
-  const { songId } = req.params;
-const song = await Song.findByPk(songId)
-! song ? res.status(404).json({ error: 'The song could not be found.'})
-: song.update(req.body, { where: {id: songId}}).then(updatedSong => {
-  res.status(200).json(updatedSong);
-});
-}
+exports.listSongs = async (req, res) => getAllItems(res, 'song');
 
-exports.deleteSongBySongId = async (req, res) => {
-  const { songId } = req.params; 
-const song = await Song.findByPk(songId);
-! song ? res.status(404).json({ error: 'The song could not be found.'})
-: Song.destroy({where: { id: songId }}).then(destroyedSong => {
-  res.status(204).json(destroyedSong);
-});
-};
+exports.findSongBySongId = async (req, res) => findItemById (res, 'song', req.params.songId);
+
+exports.findBySongName = async (req, res) => findItemByName (res, 'song', req.query.name);
+
+exports.updateSongBySongId = async (req, res) => updateModel(res, 'song', req.body, req.params.songId);
+
+exports.deleteSongBySongId = async (req, res) => deleteItemById (res, 'song', req.params.songId);
