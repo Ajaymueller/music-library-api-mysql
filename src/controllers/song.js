@@ -19,6 +19,7 @@ exports.createSong = async (req, res) => {
 })
 .catch((error) => {
   const errorMessages = error.errors.map((e) => e.message);
+  console.log('test', errorMessages);
   return res.status(400).json({ errors: errorMessages});
 });
 };

@@ -38,7 +38,7 @@ describe('/songs', () => {
   });
 
   describe('POST /albums/:albumId/song', () => {
-    xit('creates a new song under an album', (done) => {
+    it('creates a new song under an album', (done) => {
       request(app)
         .post(`/albums/${album.id}/song`)
         .send({
@@ -55,7 +55,7 @@ describe('/songs', () => {
           done();
         });
     });
-    xit('returns a 404 and does not create a song if the album does not exist', (done) => {
+    it('returns a 404 and does not create a song if the album does not exist', (done) => {
       request(app)
         .post('/albums/1234/song')
         .send({
@@ -72,13 +72,13 @@ describe('/songs', () => {
           });
         });
     });
-    xit('cannot create the artist if there is no name', (done) => {
+    it('cannot create the song if there is no name', (done) => {
       request(app)
-      .post(`/artists`)
+      .post(`/albums/${album.id}/song`)
       .send({})
       .then((res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.errors.length).to.equal(2);
+        expect(res.body.errors.length).to.equal(1);
         Song.findAll().then((songs) => {
           expect(songs.length).to.equal(0);
           done();
@@ -117,7 +117,7 @@ describe('/songs', () => {
     });
 
     describe('GET albums/:albumId/songs', () => {
-      xit('gets all songs by album id', (done) => {
+      it('gets all songs by album id', (done) => {
         request(app)
           .get(`/albums/${album.id}/song`)
           .then((res) => {
@@ -131,7 +131,7 @@ describe('/songs', () => {
             done();
           });
       });
-     xit('returns a 404 if the artist does not exist', (done) => {
+     it('returns a 404 if the artist does not exist', (done) => {
         request(app)
           .get('/albums/12345/song')
           .then((res) => {
@@ -164,7 +164,7 @@ describe('/songs', () => {
       })
     })
     describe('GET /song', () => {
-      xit('gets song where name contains a specific word', (done) => {
+      it('gets song where name contains a specific word', (done) => {
         const song = songs[0];
         request(app)
         .get('/song/find/word')
@@ -176,7 +176,7 @@ describe('/songs', () => {
           done();
         })
       })
-      xit('returns a 404 if the song does not exist', (done) => {
+      it('returns a 404 if the song does not exist', (done) => {
         request(app)
           .get(`/song/find/word`)
           .query({ name: 'randomName' })
@@ -212,7 +212,7 @@ describe('/songs', () => {
       });
     })
     describe('GET artists/:artistId/songs', () => {
-      xit('gets all songs by a specific artist id', (done) => {
+      it('gets all songs by a specific artist id', (done) => {
         const song = songs[0];
         request(app)
         .get(`/artists/${artist.id}/songs`)
@@ -226,7 +226,7 @@ describe('/songs', () => {
           done();
         })
       })
-      xit('returns a 404 if the songs do not exist', (done) => {
+      it('returns a 404 if the songs do not exist', (done) => {
         request(app)
           .get(`/artists/12345/songs`)
           .then((res) => {

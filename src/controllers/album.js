@@ -1,6 +1,6 @@
 const { Album } = require('../sequelize');
 const { Artist } = require('../sequelize');
-const { getAllItems, findItemById, findItemByArtistId, findItemByName, findItemByYear, updateModel, deleteItemById, deleteAlbumByIdAndName } = require('./helpers');
+const { getAllItems, findItemById, findItemByName, findItemByYear, updateModel, deleteItemById, deleteAlbumByIdAndName } = require('./helpers');
 
 exports.createAlbum = async (req, res) => {
   const { artistId } = req.params;

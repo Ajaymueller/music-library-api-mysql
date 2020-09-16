@@ -17,10 +17,8 @@ const setupDatabase = () => {
   const Album = AlbumModel(sequelize, Sequelize);
   const Song = SongModel(sequelize, Sequelize);
   Album.belongsTo(Artist, { as: 'artist' });
-  //Artist.hasMany(Album, { as: 'albums' , foreignKey: 'artistId' });
   Song.belongsTo(Album, { as: 'album' });
   Song.belongsTo(Artist, { as: 'artist' });
-  //Album.hasMany(Song, { as: 'songs'});
 
   sequelize.sync({ alter: true });
   return {
